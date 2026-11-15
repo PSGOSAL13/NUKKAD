@@ -54,6 +54,7 @@ const config: NextConfig = {
   // The default image optimizer needs a server. Images will be pre-optimised
   // at build time by scripts/optimize-images (milestone M2).
   images: { unoptimized: true },
+  // (experimental.inlineCss was measured and gave no reliable gain — left off.)
   // cacheComponents is intentionally off: it targets server-rendered caching,
   // which a fully static export does not use, and it forbids `dynamicParams`.
   turbopack: {

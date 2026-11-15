@@ -23,7 +23,7 @@ export const baateinData = {
     title: { en: "Pull up a stool. Kahani shuru hoti hai.", ml: "ഒരു സ്റ്റൂൾ എടുക്കൂ. കഥ തുടങ്ങുന്നു." },
     body: [
       {
-        en: "Now and then, the owner hosts a small, informal storytelling session over chai. The owner chooses the story — you just bring your curiosity.",
+        en: "Now and then, Prem — the owner — hosts a small, informal storytelling session over chai. He chooses the story; you just bring your curiosity.",
         ml: "ഇടയ്ക്കിടെ, ഉടമ ചായയ്‌ക്കൊപ്പം ഒരു ചെറിയ കഥപറച്ചിൽ സംഘടിപ്പിക്കുന്നു. കഥ ഉടമ തിരഞ്ഞെടുക്കും.",
       },
     ],

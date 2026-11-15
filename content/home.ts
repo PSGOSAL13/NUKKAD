@@ -75,8 +75,13 @@ export const homeData = {
   // 3 · Our story (teaser — the conversation lives in content/story.ts)
   story: {
     eyebrow: { en: "Our Story", ml: "ഞങ്ങളുടെ കഥ" },
-    title: { en: "From the sea to the street corner" },
-    body: [{ en: "Grab a chai and ask the founder anything. Here's how the conversation usually goes." }],
+    title: { en: "From the sea to the street corner", ml: "കടലിൽ നിന്ന് തെരുവോരത്തേക്ക്" },
+    body: [
+      {
+        en: "Meet Prem — spreading love and happiness at the nukkad. Grab a chai and ask him anything; here's how the conversation usually goes.",
+        ml: "പ്രേമിനെ പരിചയപ്പെടൂ — നുക്കഡിൽ സ്നേഹവും സന്തോഷവും പകരുന്നയാൾ. ഒരു ചായയുമായി എന്തും ചോദിക്കൂ.",
+      },
+    ],
   },
 
   // 4 · Atmosphere

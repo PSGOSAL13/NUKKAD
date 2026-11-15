@@ -86,7 +86,7 @@ export const ml: Dictionary = {
     callForGroupBooking: "ഗ്രൂപ്പ് ബുക്കിംഗിന് വിളിക്കൂ",
     callToPropose: "ഒരു ഇവന്റ് നിർദ്ദേശിക്കാൻ വിളിക്കൂ",
     hostedBy: "നടത്തുന്നത്",
-    hostedByOwner: "ഉടമ നടത്തുന്നു",
+    hostedByOwner: "ഉടമ പ്രേം നടത്തുന്നു",
     walkIn: "രജിസ്ട്രേഷൻ ആവശ്യമില്ല — നേരിട്ട് വരൂ.",
     samplePhoto: "സാമ്പിൾ ചിത്രം",
     sample: "സാമ്പിൾ",

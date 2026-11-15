@@ -90,7 +90,7 @@ export const en = {
     callForGroupBooking: "Call for group booking",
     callToPropose: "Call to propose an event",
     hostedBy: "Hosted by",
-    hostedByOwner: "Hosted by the owner",
+    hostedByOwner: "Hosted by Prem, the owner",
     walkIn: "No registration — just walk in.",
     samplePhoto: "Sample photo",
     sample: "Sample",

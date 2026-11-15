@@ -39,18 +39,18 @@ export default async function BaateinPage({ params }: PageProps<"/[lang]/nukkad-
       <PageHeader
         title={
           <>
-            {dict.nav.baatein}
-            <span className="mt-2 block font-display text-3xl text-red sm:text-4xl">
+            {dict.nav.baatein}{" "}
+            <span className="font-display text-xl font-normal text-red sm:text-2xl">
               — {t(b.intro.title, locale)}
             </span>
           </>
         }
-        intro={<Paragraphs items={b.intro.body} locale={locale} className="text-xl" />}
       />
 
       {/* Owner-led storytelling */}
-      <section aria-labelledby="storytelling-title" className="py-16 sm:py-20">
+      <section aria-labelledby="storytelling-title" className="py-12 sm:py-16">
         <Container>
+          <Paragraphs items={b.intro.body} locale={locale} className="mb-10 max-w-3xl" />
           <SectionHeading
             id="storytelling-title"
             eyebrow={b.storytelling.eyebrow && t(b.storytelling.eyebrow, locale)}
