@@ -54,6 +54,18 @@ export const ml: Dictionary = {
     notFoundTitle: "അയ്യോ! വഴി തെറ്റി.",
     notFoundBody: "ഈ മൂല നിലവിലില്ല. നമുക്ക് ചായയിലേക്ക് മടങ്ങാം.",
   },
+  menu: {
+    board: "മെനു ബോർഡ്",
+    categories: "മെനു വിഭാഗങ്ങൾ",
+    soldOut: "തീർന്നു",
+    sample: "സാമ്പിൾ",
+    samplePhoto: "സാമ്പിൾ ചിത്രം",
+    viewDetails: "വിശദാംശങ്ങൾ കാണുക",
+    close: "അടയ്ക്കുക",
+    highlights: "പ്രത്യേകതകൾ",
+    allPricesNote: "വിലകൾ ഇന്ത്യൻ രൂപയിൽ.",
+    menuOnlyNote: "മെനു കാണാൻ മാത്രം — കൗണ്ടറിൽ ഓർഡർ ചെയ്യൂ.",
+  },
   opening: {
     comeSitStay: "വരൂ, ഇരിക്കൂ",
     skip: "ഒഴിവാക്കുക",
@@ -89,6 +101,7 @@ export const ml: Dictionary = {
   },
   tags: {
     signature: "സിഗ്നേച്ചർ",
+    bestseller: "ബെസ്റ്റ് സെല്ലർ",
     new: "പുതിയത്",
     spicy: "എരിവുള്ളത്",
     seasonal: "സീസണൽ",

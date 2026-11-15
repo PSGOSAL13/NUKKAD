@@ -28,6 +28,9 @@
   --color-ink: #2b1d16; /* body text — "chai patti" brown-black, 13.7:1 on cream */
   --color-ink-muted: #6b5848; /* secondary text — 5.7:1 on cream */
   --color-clay: #b5653a; /* illustration only (kulhad terracotta) — not for text */
+  --color-wood: #7a4a2a; /* menu-board frame */
+  --color-wood-dark: #4e2e1a;
+  --color-board: #26302b; /* menu chalkboard — cream text 11.5:1, yellow 7.4:1 */
 
   /* Functional: FSSAI-style diet marks */
   --color-veg: #2a6e2e;
@@ -37,6 +40,8 @@
   --font-display: var(--font-yatra), var(--font-heading-stack), serif;
   --font-heading: var(--font-heading-stack);
   --font-sans: var(--font-body-stack);
+  /* Handwritten chalk lettering — menu board only */
+  --font-hand: var(--font-hand-stack);
 
   /* Shape */
   --radius-sm: 0.25rem;
@@ -95,10 +100,12 @@
 :root {
   --font-heading-stack: var(--font-baloo), system-ui, sans-serif;
   --font-body-stack: var(--font-mukta), system-ui, sans-serif;
+  --font-hand-stack: var(--font-kalam), var(--font-heading-stack);
 }
 :root:lang(ml) {
   --font-heading-stack: var(--font-baloo-chettan), var(--font-baloo), system-ui, sans-serif;
   --font-body-stack: var(--font-noto-ml), var(--font-mukta), system-ui, sans-serif;
+  --font-hand-stack: var(--font-chilanka), var(--font-kalam), var(--font-heading-stack);
 }
 
 @layer base {
@@ -156,6 +163,14 @@
   mask:
     linear-gradient(#000 0 0) top / 100% calc(100% - 14px) no-repeat,
     radial-gradient(circle 14px at 50% 0, #000 97%, transparent) bottom / 28px 14px repeat-x;
+}
+@utility texture-chalkboard {
+  /* Slate board with faint chalk dust and smudges. */
+  background-color: var(--color-board);
+  background-image:
+    radial-gradient(ellipse at 20% 15%, rgb(255 255 255 / 0.06), transparent 55%),
+    radial-gradient(ellipse at 80% 85%, rgb(255 255 255 / 0.05), transparent 50%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 @utility hand-underline {
   /* Hand-painted brush underline under a word. */

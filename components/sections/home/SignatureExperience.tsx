@@ -1,4 +1,5 @@
 import { FoodIllustration } from "@/components/illustrations/FoodIllustration";
+import { SoldOutStamp } from "@/components/menu/MenuPhoto";
 import { RotatingMenuPreview } from "@/components/menu/RotatingMenuPreview";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
@@ -6,9 +7,9 @@ import { Paragraphs } from "@/components/ui/Paragraphs";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { t, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/en";
-import { featuredMenuItems, home, signatureItems } from "@/lib/content";
+import { home, menu, signatureItems } from "@/lib/content";
 import { formatPrice } from "@/lib/format";
-import { toMenuItemView } from "@/lib/menu-view";
+import { menuLabels } from "@/lib/menu-shared";
 import { href } from "@/lib/routes";
 
 /** 2 · Signature experience: Masala Chai, Samosa, Jalebi + rotating six-item preview. */
@@ -39,6 +40,9 @@ export function SignatureExperience({ locale, dict }: { locale: Locale; dict: Di
                 (i === 1 ? "md:-translate-y-4" : "")
               }
             >
+              {item.status === "sold-out" && (
+                <SoldOutStamp label={dict.menu.soldOut} className="absolute top-4 right-4 z-10" />
+              )}
               <FoodIllustration kind={illustration} className="mx-auto max-w-[180px]" />
               <h3 className="mt-2 font-display text-3xl text-red">{t(item.name, locale)}</h3>
               <p className="mt-2 text-lg">{t(note, locale)}</p>
@@ -55,7 +59,9 @@ export function SignatureExperience({ locale, dict }: { locale: Locale; dict: Di
           </h3>
           <div className="mt-8 text-ink">
             <RotatingMenuPreview
-              items={featuredMenuItems.map((i) => toMenuItemView(i, locale, dict))}
+              initialMenu={menu}
+              locale={locale}
+              labels={menuLabels(dict)}
               pauseLabel={dict.common.pauseRotation}
               playLabel={dict.common.playRotation}
               controlClassName="text-cream/80 hover:text-yellow"

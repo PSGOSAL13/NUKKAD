@@ -1,4 +1,12 @@
-import { Baloo_2, Baloo_Chettan_2, Mukta, Noto_Sans_Malayalam, Yatra_One } from "next/font/google";
+import {
+  Baloo_2,
+  Baloo_Chettan_2,
+  Chilanka,
+  Kalam,
+  Mukta,
+  Noto_Sans_Malayalam,
+  Yatra_One,
+} from "next/font/google";
 import type { Locale } from "@/i18n/config";
 
 /**
@@ -27,10 +35,29 @@ const balooChettan = Baloo_Chettan_2({
 });
 const notoMl = Noto_Sans_Malayalam({ subsets: ["malayalam"], variable: "--font-noto-ml", display: "swap" });
 
-const shared = [yatra, baloo, mukta];
+/**
+ * Handwriting for the menu board: Kalam (Latin + Devanagari) and Chilanka
+ * (Malayalam). Not preloaded — only downloaded on pages that use them.
+ */
+const kalam = Kalam({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  variable: "--font-kalam",
+  display: "swap",
+  preload: false,
+});
+const chilanka = Chilanka({
+  weight: "400",
+  subsets: ["malayalam"],
+  variable: "--font-chilanka",
+  display: "swap",
+  preload: false,
+});
+
+const shared = [yatra, baloo, mukta, kalam];
 const perLocale: Record<Locale, (typeof shared)[number][]> = {
   en: shared,
-  ml: [...shared, balooChettan, notoMl],
+  ml: [...shared, balooChettan, notoMl, chilanka],
 };
 
 /** className for <html> that exposes the font CSS variables used by this locale. */

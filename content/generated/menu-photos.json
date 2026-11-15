@@ -1,0 +1,52 @@
+{
+  "cutting-chai": {
+    "width": 960,
+    "height": 1200,
+    "sample": true
+  },
+  "elaichi-chai": {
+    "width": 960,
+    "height": 664,
+    "sample": true
+  },
+  "imarti": {
+    "width": 960,
+    "height": 644,
+    "sample": true
+  },
+  "jalebi": {
+    "width": 960,
+    "height": 1482,
+    "sample": true
+  },
+  "kulhad-chai": {
+    "width": 960,
+    "height": 1440,
+    "sample": true
+  },
+  "kulhad-coffee": {
+    "width": 960,
+    "height": 1440,
+    "sample": true
+  },
+  "kulhad-lassi": {
+    "width": 960,
+    "height": 1280,
+    "sample": true
+  },
+  "masala-chai": {
+    "width": 960,
+    "height": 1440,
+    "sample": true
+  },
+  "pakode": {
+    "width": 960,
+    "height": 1200,
+    "sample": true
+  },
+  "samosa": {
+    "width": 960,
+    "height": 640,
+    "sample": true
+  }
+}

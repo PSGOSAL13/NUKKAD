@@ -83,26 +83,56 @@ export const siteSchema = z.strictObject({
 });
 export type SiteContent = z.infer<typeof siteSchema>;
 
+// ---------- Illustrations (hand-drawn SVGs in components/illustrations) ----------
+
+export const foodIllustration = z.enum(["chai", "samosa", "jalebi", "bun-maska", "pakora"]);
+export type FoodIllustration = z.infer<typeof foodIllustration>;
+export const sceneIllustration = z.enum(["counter", "radio", "bicycle", "lamps", "books", "carrom"]);
+export type SceneIllustration = z.infer<typeof sceneIllustration>;
+
 // ---------- Menu ----------
+
+export const menuStatus = z.enum(["available", "sold-out", "hidden"]);
+export const menuHighlight = z.enum(["signature", "bestseller", "new", "spicy", "seasonal"]);
+export const dietEnum = z.enum(["veg", "vegan", "egg", "nonveg"]);
+
+/** A photo name from photos/menu/ (e.g. "masala-chai") or a full https:// image URL. */
+const photoRef = z.union([slug, z.url({ protocol: /^https$/ })]);
 
 export const menuItemSchema = z.strictObject({
   id: slug,
   name: localizedSchema,
+  /** One line, shown on the board. */
   description: localizedSchema.optional(),
-  /** Price in whole rupees. */
+  /** Longer text, shown when the item is opened. */
+  details: localizedSchema.optional(),
+  /** Exact price in whole rupees. */
   price: z.number().int().positive(),
-  diet: z.enum(["veg", "vegan", "egg", "nonveg"]),
-  tags: z.array(z.enum(["signature", "new", "spicy", "seasonal"])).default([]),
-  /** Show in the rotating preview on the home page. */
+  /** Optional food mark per item (the café itself is never labelled veg-only or non-veg-only). */
+  diet: dietEnum.optional(),
+  tags: z.array(menuHighlight).default([]),
+  /**
+   * available — shown normally
+   * sold-out  — shown with a "Sold Out" label
+   * hidden    — not shown at all
+   */
+  status: menuStatus.default("available"),
+  /** Include in the rotating six on the home page. */
   featured: z.boolean().default(false),
-  /** Set to false to hide an item temporarily without deleting it. */
-  available: z.boolean().default(true),
+  photo: photoRef.optional(),
+  photoAlt: localizedSchema.optional(),
+  /** Illustration used when there is no photo (defaults to the category's). */
+  illustration: foodIllustration.optional(),
+  /** Marks sample content that must be replaced before launch. */
+  sample: z.boolean().default(false),
 });
 
 export const menuCategorySchema = z.strictObject({
   id: slug,
   name: localizedSchema,
   description: localizedSchema.optional(),
+  /** Hand-drawn illustration for the category header and for items without a photo. */
+  illustration: foodIllustration,
   items: z.array(menuItemSchema).min(1),
 });
 
@@ -118,13 +148,6 @@ export const menuSchema = z
   });
 export type MenuItem = z.infer<typeof menuItemSchema>;
 export type MenuCategory = z.infer<typeof menuCategorySchema>;
-
-// ---------- Illustrations (hand-drawn SVGs in components/illustrations) ----------
-
-export const foodIllustration = z.enum(["chai", "samosa", "jalebi", "bun-maska", "pakora"]);
-export type FoodIllustration = z.infer<typeof foodIllustration>;
-export const sceneIllustration = z.enum(["counter", "radio", "bicycle", "lamps", "books", "carrom"]);
-export type SceneIllustration = z.infer<typeof sceneIllustration>;
 
 // ---------- Home page copy ----------
 

@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import type { NextConfig } from "next";
 import { PHASE_PRODUCTION_BUILD } from "next/constants";
 import { baateinData } from "./content/baatein";
@@ -14,9 +16,15 @@ import { printPlaceholderReport } from "./lib/placeholder-report";
 const nextConfig = (phase: string): NextConfig => {
   // Once per build: list any content still marked as a placeholder.
   if (phase === PHASE_PRODUCTION_BUILD) {
+    const generated = (f: string) => {
+      const p = path.join(process.cwd(), "content", "generated", f);
+      return fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, "utf8")) : undefined;
+    };
+    const sheetMenu = generated("menu-from-sheet.json");
     printPlaceholderReport({
       site: siteData,
-      menu: menuData,
+      ...(sheetMenu ? { "generated/menu-from-sheet (Google Sheet)": sheetMenu } : { menu: menuData }),
+      "generated/menu-photos": generated("menu-photos.json"),
       home: homeData,
       story: storyData,
       location: locationData,

@@ -2,6 +2,7 @@
   "name": "nukkad",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,7 +12,11 @@
     "format:check": "prettier --check .",
     "check": "npm run lint && npm run typecheck && npm run format:check && npm run build",
     "brand:logos": "node brand/tools/build-logos.mjs",
-    "postbuild": "node scripts/fix-export-segments.mjs"
+    "postbuild": "node scripts/fix-export-segments.mjs",
+    "menu:prepare": "node scripts/build-menu-photos.mjs && node scripts/sync-menu.ts",
+    "menu:template": "node scripts/sync-menu.ts --template",
+    "predev": "npm run menu:prepare",
+    "prebuild": "npm run menu:prepare"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

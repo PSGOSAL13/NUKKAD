@@ -45,3 +45,6 @@ next-env.d.ts
 /assets-src/
 *.blend
 *.blend1
+
+# menu synced from the Google Sheet at build time
+/content/generated/menu-from-sheet.json

@@ -13,6 +13,12 @@ export function findPlaceholders(files: Record<string, unknown>): string[] {
     } else if (Array.isArray(value)) {
       value.forEach((v, i) => walk(v, `${path}[${i}]`));
     } else if (value && typeof value === "object") {
+      // Objects flagged `sample: true` (sample menu items, sample photos) count too.
+      if ((value as { sample?: unknown }).sample === true) {
+        const id = (value as { id?: unknown }).id;
+        found.push(`${path}${typeof id === "string" ? ` (${id})` : ""} — sample`);
+        return;
+      }
       for (const [k, v] of Object.entries(value)) walk(v, path ? `${path}.${k}` : k);
     }
   };

@@ -7,7 +7,9 @@ import { DietMark } from "@/components/ui/DietMark";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Tag } from "@/components/ui/Tag";
+import { menu } from "@/lib/content";
 import { resolveLocale } from "@/lib/locale-params";
+import { menuLabels } from "@/lib/menu-shared";
 
 /** Living style guide. Not linked from the site and excluded from search engines. */
 export const metadata: Metadata = { title: "Brand system", robots: { index: false, follow: false } };
@@ -94,16 +96,13 @@ const colours = [
 ];
 
 export default async function BrandPage({ params }: PageProps<"/[lang]/brand">) {
-  const { dict } = await resolveLocale(params);
-  const sample = {
-    id: "sample",
-    name: "Kulhad Chai",
-    description: "Slow-brewed and served in clay.",
-    price: "₹35",
-    diet: "veg" as const,
-    dietLabel: dict.diet.veg,
-    tags: [dict.tags.signature],
-  };
+  const { locale, dict } = await resolveLocale(params);
+  // Real menu cards: one with a photo, one with an illustration, one sold out.
+  const examples = ["masala-chai", "bun-maska", "kulhad-lassi"].flatMap((id) =>
+    menu.flatMap((c) =>
+      c.items.filter((i) => i.id === id).map((item) => ({ item, illustration: c.illustration })),
+    ),
+  );
 
   return (
     <>
@@ -238,21 +237,16 @@ export default async function BrandPage({ params }: PageProps<"/[lang]/brand">) 
               </span>
             ))}
           </div>
-          <div className="grid gap-6 md:grid-cols-2">
-            <MenuItemCard item={sample} layout="card" />
-            <div className="rounded-lg border-2 border-ink bg-paper px-5">
-              <MenuItemCard item={sample} />
+          <div className="grid gap-6 md:grid-cols-3">
+            {examples.map(({ item, illustration }) => (
               <MenuItemCard
-                item={{
-                  ...sample,
-                  id: "s2",
-                  name: "Bun Maska",
-                  price: "₹40",
-                  tags: [],
-                  description: undefined,
-                }}
+                key={item.id}
+                item={item}
+                illustration={illustration}
+                locale={locale}
+                labels={menuLabels(dict)}
               />
-            </div>
+            ))}
           </div>
         </section>
 

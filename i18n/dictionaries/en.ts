@@ -57,6 +57,18 @@ export const en = {
     notFoundTitle: "Arre! Wrong turn.",
     notFoundBody: "This corner doesn't exist. Let's get you back to the chai.",
   },
+  menu: {
+    board: "Menu board",
+    categories: "Menu categories",
+    soldOut: "Sold Out",
+    sample: "Sample",
+    samplePhoto: "Sample photo",
+    viewDetails: "View details",
+    close: "Close",
+    highlights: "Highlights",
+    allPricesNote: "Prices in Indian rupees.",
+    menuOnlyNote: "Menu for viewing only — order at the counter.",
+  },
   opening: {
     comeSitStay: "Come, Sit & Stay",
     skip: "Skip",
@@ -92,6 +104,7 @@ export const en = {
   },
   tags: {
     signature: "Signature",
+    bestseller: "Bestseller",
     new: "New",
     spicy: "Spicy",
     seasonal: "Seasonal",

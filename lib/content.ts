@@ -1,4 +1,6 @@
 import "server-only";
+import fs from "node:fs";
+import path from "node:path";
 import { z } from "zod";
 import { baateinData } from "@/content/baatein";
 import { eventsData } from "@/content/events";
@@ -37,7 +39,17 @@ function load<T extends z.ZodType>(name: string, schema: T, data: unknown): z.in
 }
 
 export const site = load("site", siteSchema, siteData);
-export const menu = load("menu", menuSchema, menuData);
+/**
+ * Menu source: the Google Sheet copy saved by scripts/sync-menu.ts if one
+ * exists, otherwise the built-in content/menu.ts.
+ */
+const sheetMenuFile = path.join(process.cwd(), "content", "generated", "menu-from-sheet.json");
+export const menuOrigin: "sheet" | "file" = fs.existsSync(sheetMenuFile) ? "sheet" : "file";
+export const menu = load(
+  menuOrigin === "sheet" ? "generated/menu-from-sheet.json (Google Sheet)" : "menu",
+  menuSchema,
+  menuOrigin === "sheet" ? JSON.parse(fs.readFileSync(sheetMenuFile, "utf8")) : menuData,
+);
 export const home = load("home", homeSchema, homeData);
 export const story = load("story", storySchema, storyData);
 export const baatein = load("baatein", baateinSchema, baateinData);
@@ -48,24 +60,28 @@ export const location = load("location", locationSchema, locationData);
 
 const menuById = new Map(menu.flatMap((c) => c.items).map((i) => [i.id, i] as const));
 
-/** The three signature items, resolved against the menu (build fails on a bad id). */
+type SignatureEntry = (typeof home.signature.items)[number];
+
+/**
+ * The three signature items, resolved against the current menu. An item that
+ * is missing (e.g. removed from the sheet) or hidden is left out with a
+ * warning rather than breaking the build.
+ */
 export const signatureItems: {
   item: MenuItem;
-  illustration: (typeof home.signature.items)[number]["illustration"];
-  note: (typeof home.signature.items)[number]["note"];
-}[] = home.signature.items.map((s) => {
+  illustration: SignatureEntry["illustration"];
+  note: SignatureEntry["note"];
+}[] = home.signature.items.flatMap((s) => {
   const item = menuById.get(s.menuItemId);
-  if (!item) {
-    throw new Error(
-      `content/home.ts: signature item "${s.menuItemId}" is not in content/menu.ts. Valid ids: ${[...menuById.keys()].join(", ")}`,
+  if (!item || item.status === "hidden") {
+    console.warn(
+      `⚠  signature item "${s.menuItemId}" is ${item ? "hidden" : "not on the menu"} — left out of the home page trio.`,
     );
+    return [];
   }
-  return { item, illustration: s.illustration, note: s.note };
+  return [{ item, illustration: s.illustration, note: s.note }];
 });
 
 const today = new Date().toISOString().slice(0, 10);
 /** Events still current at build time. */
 export const events = load("events", eventsSchema, eventsData).filter((e) => !e.endsOn || e.endsOn >= today);
-
-/** Available items marked `featured`, for the home page preview. */
-export const featuredMenuItems = menu.flatMap((c) => c.items).filter((i) => i.featured && i.available);
