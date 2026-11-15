@@ -21,15 +21,19 @@ const nextConfig = (phase: string): NextConfig => {
       return fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, "utf8")) : undefined;
     };
     const sheetMenu = generated("menu-from-sheet.json");
+    const sheetEvents = generated("events-from-sheet.json");
     printPlaceholderReport({
       site: siteData,
       ...(sheetMenu ? { "generated/menu-from-sheet (Google Sheet)": sheetMenu } : { menu: menuData }),
       "generated/menu-photos": generated("menu-photos.json"),
+      ...(sheetEvents
+        ? { "generated/events-from-sheet (Google Sheet)": sheetEvents }
+        : { events: eventsData }),
+      "generated/events-photos": generated("events-photos.json"),
       home: homeData,
       story: storyData,
       location: locationData,
       baatein: baateinData,
-      events: eventsData,
       gallery: galleryData,
       opening: openingData,
     });

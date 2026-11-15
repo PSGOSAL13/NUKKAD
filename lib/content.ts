@@ -2,6 +2,7 @@ import "server-only";
 import fs from "node:fs";
 import path from "node:path";
 import { z } from "zod";
+import { nowInIndia, upcomingEvents } from "@/lib/events-shared";
 import { baateinData } from "@/content/baatein";
 import { eventsData } from "@/content/events";
 import { galleryData } from "@/content/gallery";
@@ -82,6 +83,24 @@ export const signatureItems: {
   return [{ item, illustration: s.illustration, note: s.note }];
 });
 
-const today = new Date().toISOString().slice(0, 10);
-/** Events still current at build time. */
-export const events = load("events", eventsSchema, eventsData).filter((e) => !e.endsOn || e.endsOn >= today);
+/**
+ * All events (published and drafts), from the Google Sheet copy if one
+ * exists, otherwise content/events.ts. Pages show only published, upcoming
+ * ones — decided again in the browser with the visitor's clock.
+ */
+const sheetEventsFile = path.join(process.cwd(), "content", "generated", "events-from-sheet.json");
+const eventsFromSheet = fs.existsSync(sheetEventsFile);
+export const events = load(
+  eventsFromSheet ? "generated/events-from-sheet.json (Google Sheet)" : "events",
+  eventsSchema,
+  eventsFromSheet ? JSON.parse(fs.readFileSync(sheetEventsFile, "utf8")) : eventsData,
+);
+
+/** "Now" in India when the site was built (the starting point for the client clock). */
+export const buildNow = nowInIndia();
+
+/**
+ * What pages may send to the browser: published events that haven't finished
+ * at build time. Drafts and past events never reach the page HTML.
+ */
+export const publicEvents = upcomingEvents(events, buildNow);

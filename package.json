@@ -13,10 +13,10 @@
     "check": "npm run lint && npm run typecheck && npm run format:check && npm run build",
     "brand:logos": "node brand/tools/build-logos.mjs",
     "postbuild": "node scripts/fix-export-segments.mjs",
-    "menu:prepare": "node scripts/build-menu-photos.mjs && node scripts/sync-menu.ts",
-    "menu:template": "node scripts/sync-menu.ts --template",
-    "predev": "npm run menu:prepare",
-    "prebuild": "npm run menu:prepare"
+    "predev": "npm run content:prepare",
+    "prebuild": "npm run content:prepare",
+    "content:prepare": "node scripts/build-photos.mjs && node scripts/sync-sheets.ts",
+    "sheets:template": "node scripts/sync-sheets.ts --template"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

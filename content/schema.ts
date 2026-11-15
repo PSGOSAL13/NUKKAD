@@ -224,38 +224,80 @@ export const locationSchema = z.strictObject({
 });
 export type LocationContent = z.infer<typeof locationSchema>;
 
-// ---------- Nukkad Ki Baatein (stories & conversations written by the café) ----------
+// ---------- Nukkad Ki Baatein — Stories Beyond Chai ----------
+
+/** The owner's three storytelling themes. The owner chooses; visitors never pick a topic. */
+export const storyTheme = z.enum(["beyond-the-uniform", "stories-of-the-sea", "stories-over-chai"]);
+export type StoryTheme = z.infer<typeof storyTheme>;
 
 export const baateinSchema = z.strictObject({
   intro: sectionCopy,
-  entries: z
-    .array(
-      z.strictObject({
-        id: slug,
-        title: localizedSchema,
-        excerpt: localizedSchema,
-        body: paragraphs,
-        date: isoDate.optional(),
-      }),
-    )
-    .superRefine(uniqueIds),
+  /** Owner-led storytelling sessions. */
+  storytelling: sectionCopy.extend({
+    /** e.g. "30–45 minutes · topic chosen by the host". */
+    format: localizedSchema,
+    themes: z
+      .array(z.strictObject({ id: storyTheme, title: localizedSchema, body: localizedSchema }))
+      .length(3),
+  }),
+  events: sectionCopy,
+  /** Customers and community groups proposing their own small events. */
+  community: sectionCopy.extend({ examples: z.array(localizedSchema).max(6) }),
+  groupBooking: sectionCopy.extend({ customMenus: localizedSchema }),
+  /** Short written pieces from the café ("chai notes"). */
+  notes: sectionCopy.extend({
+    entries: z
+      .array(
+        z.strictObject({
+          id: slug,
+          title: localizedSchema,
+          excerpt: localizedSchema,
+          body: paragraphs,
+          date: isoDate.optional(),
+        }),
+      )
+      .superRefine(uniqueIds),
+  }),
 });
 
-// ---------- Events (informational only — no registration) ----------
+// ---------- Events (informational only — no registration, no seat booking) ----------
 
-export const eventsSchema = z
-  .array(
-    z.strictObject({
-      id: slug,
-      title: localizedSchema,
-      description: localizedSchema,
-      /** Human-readable timing, e.g. "Every Friday, 7 pm". */
-      schedule: localizedSchema,
-      /** For one-off events: hidden automatically after this date (on the next build). */
-      endsOn: isoDate.optional(),
-    }),
-  )
-  .superRefine(uniqueIds);
+export const eventSchema = z
+  .strictObject({
+    id: slug,
+    /** storytelling = hosted by the owner · community = proposed by guests/groups · cafe = anything else */
+    type: z.enum(["storytelling", "community", "cafe"]),
+    /** Required for storytelling sessions, not used otherwise. */
+    theme: storyTheme.optional(),
+    title: localizedSchema,
+    description: localizedSchema,
+    /** "2026-12-05" */
+    date: isoDate,
+    /** 24-hour "18:30" (Indian Standard Time) */
+    start: time24h,
+    end: time24h.optional(),
+    /** Who is hosting (for community events). */
+    host: localizedSchema.optional(),
+    photo: photoRef.optional(),
+    photoAlt: localizedSchema.optional(),
+    /** draft = not shown on the site */
+    status: z.enum(["published", "draft"]).default("published"),
+    sample: z.boolean().default(false),
+  })
+  .superRefine((e, ctx) => {
+    if (e.type === "storytelling" && !e.theme) {
+      ctx.addIssue({ code: "custom", path: ["theme"], message: "storytelling sessions need a theme" });
+    }
+    if (e.type !== "storytelling" && e.theme) {
+      ctx.addIssue({ code: "custom", path: ["theme"], message: "only storytelling sessions have a theme" });
+    }
+    if (e.end && e.end <= e.start) {
+      ctx.addIssue({ code: "custom", path: ["end"], message: "end time must be after the start time" });
+    }
+  });
+export type CafeEvent = z.infer<typeof eventSchema>;
+
+export const eventsSchema = z.array(eventSchema).superRefine(uniqueIds);
 
 // ---------- Café atmosphere gallery ----------
 

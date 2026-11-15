@@ -89,10 +89,11 @@ export const homeData = {
   // 5 · Nukkad Ki Baatein
   baatein: {
     eyebrow: { en: "Nukkad Ki Baatein" },
-    title: { en: "Stories from the corner" },
+    title: { en: "Stories Beyond Chai", ml: "ചായയ്ക്കപ്പുറമുള്ള കഥകൾ" },
     body: [
       {
-        en: "At every nukkad, someone has a story. Here we share ours — chai thoughts, small histories and neighbourhood notes — and the conversations carry on at the tables.",
+        en: "Now and then the owner pulls up a stool and tells a story — and guests and community groups host small gatherings of their own. Everyone's welcome to listen in.",
+        ml: "ഇടയ്ക്കിടെ ഉടമ ഒരു കഥ പറയും — അതിഥികളും കൂട്ടായ്മകളും അവരുടേതായ ചെറിയ ഒത്തുചേരലുകളും നടത്തും.",
       },
     ],
   },

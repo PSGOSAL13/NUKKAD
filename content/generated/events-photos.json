@@ -1,0 +1,27 @@
+{
+  "beyond-the-uniform": {
+    "width": 960,
+    "height": 644,
+    "sample": true
+  },
+  "community-conversations": {
+    "width": 960,
+    "height": 540,
+    "sample": true
+  },
+  "community-games": {
+    "width": 960,
+    "height": 1440,
+    "sample": true
+  },
+  "stories-of-the-sea": {
+    "width": 960,
+    "height": 1440,
+    "sample": true
+  },
+  "stories-over-chai": {
+    "width": 960,
+    "height": 641,
+    "sample": true
+  }
+}

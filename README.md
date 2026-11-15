@@ -23,19 +23,19 @@ Fully static Next.js site in English and Malayalam (`/en/`, `/ml/`). The visitor
 
 All editable information lives in **`content/`** — never in components.
 
-| File                         | Contains                                                                                  |
-| ---------------------------- | ----------------------------------------------------------------------------------------- |
-| `content/site.ts`            | Name, tagline, address, phone, WhatsApp, hours, socials                                   |
-| `content/menu.ts`            | Built-in **sample** menu (used until a Google Sheet is connected — see **MENU-GUIDE.md**) |
-| `content/home.ts`            | Home page copy (all 10 sections)                                                          |
-| `content/story.ts`           | Our Story page                                                                            |
-| `content/baatein.ts`         | Nukkad Ki Baatein entries                                                                 |
-| `content/events.ts`          | Events (informational, walk-in only)                                                      |
-| `content/gallery.ts`         | Atmosphere photos                                                                         |
-| `content/location.ts`        | Illustrated map: café pin, nearby landmarks, `confirmed` flag                             |
-| `content/placeholders.ts`    | Dummy phone / Instagram values used until real ones exist                                 |
-| `content/opening.ts`         | Opening greeting (Hindi / Malayalam), voice + ambience files                              |
-| `content/owner-character.ts` | Look of the cartoon owner in the 3D opening                                               |
+| File                         | Contains                                                                                   |
+| ---------------------------- | ------------------------------------------------------------------------------------------ |
+| `content/site.ts`            | Name, tagline, address, phone, WhatsApp, hours, socials                                    |
+| `content/menu.ts`            | Built-in **sample** menu (used until a Google Sheet is connected — see **OWNER-GUIDE.md**) |
+| `content/home.ts`            | Home page copy (all 10 sections)                                                           |
+| `content/story.ts`           | Our Story page                                                                             |
+| `content/baatein.ts`         | Nukkad Ki Baatein entries                                                                  |
+| `content/events.ts`          | Built-in **sample** events (used until the sheet is connected)                             |
+| `content/gallery.ts`         | Atmosphere photos                                                                          |
+| `content/location.ts`        | Illustrated map: café pin, nearby landmarks, `confirmed` flag                              |
+| `content/placeholders.ts`    | Dummy phone / Instagram values used until real ones exist                                  |
+| `content/opening.ts`         | Opening greeting (Hindi / Malayalam), voice + ambience files                               |
+| `content/owner-character.ts` | Look of the cartoon owner in the 3D opening                                                |
 
 Text is written as `{ en: "…", ml: "…" }`. English is required; missing
 Malayalam falls back to English.
@@ -50,11 +50,11 @@ stops and tells you exactly which field to fix.
 
 Interface labels (navigation, buttons, day names) are in `i18n/dictionaries/`.
 
-## Menu
+## Menu & events
 
-The owner edits the menu in a **Google Sheet** — no code. See **MENU-GUIDE.md**.
-Photos go in `photos/menu/` (named after the product); `npm run build` optimises them.
-`npm run menu:template` re-exports the built-in menu as a CSV to import into the sheet.
+The owner edits the menu and events in a **Google Sheet** (two tabs) — no code. See **OWNER-GUIDE.md**.
+Photos go in `photos/menu/` and `photos/events/`; `npm run build` optimises them.
+`npm run sheets:template` re-exports the built-in menu and events as CSVs to import into the sheet.
 
 ## Cinematic 3D opening
 
