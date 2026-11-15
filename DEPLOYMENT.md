@@ -49,7 +49,12 @@ stale-while-revalidate).
 
 ## Alternative — Vercel (Pro)
 
-Import the repository; `vercel.json` sets the build command, `out` directory
+Import the repository. `vercel.json` sets the Framework Preset to **Other**
+(`"framework": null`) — required, because the site is a static export and
+Vercel's Next.js preset would look for `routes-manifest.json` and fail. In
+Project Settings → Build & Deployment, leave Framework Preset, Build Command
+and Output Directory **un-overridden** so `vercel.json` applies. It also sets
+the build command, `out` directory
 and the same headers. Add the same environment variables. Node 24 is taken
 from `engines` in `package.json`.
 
