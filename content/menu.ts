@@ -99,4 +99,23 @@ export const menuData = [
       },
     ],
   },
+  {
+    id: "sweets",
+    name: { en: "Meetha", ml: "മധുരം" },
+    description: { en: "Kuch meetha ho jaaye?", ml: "ഒരു മധുരം ആയാലോ?" },
+    items: [
+      {
+        id: "jalebi",
+        name: { en: "Jalebi", ml: "ജിലേബി" },
+        description: {
+          en: "Hot, crisp spirals soaked in saffron syrup.",
+          ml: "കുങ്കുമപ്പൂ സിറപ്പിൽ മുക്കിയ ചൂടുള്ള ചുരുളുകൾ.",
+        },
+        price: 40,
+        diet: "veg",
+        tags: ["signature"],
+        featured: true,
+      },
+    ],
+  },
 ] satisfies z.input<typeof menuSchema>;

@@ -23,20 +23,26 @@ Fully static Next.js site in English and Malayalam (`/en/`, `/ml/`). The visitor
 
 All editable information lives in **`content/`** — never in components.
 
-| File                         | Contains                                                     |
-| ---------------------------- | ------------------------------------------------------------ |
-| `content/site.ts`            | Name, tagline, address, phone, WhatsApp, hours, socials      |
-| `content/menu.ts`            | Menu categories, items, prices, diet flags, `featured` items |
-| `content/home.ts`            | Home page copy (all 10 sections)                             |
-| `content/story.ts`           | Our Story page                                               |
-| `content/baatein.ts`         | Nukkad Ki Baatein entries                                    |
-| `content/events.ts`          | Events (informational, walk-in only)                         |
-| `content/gallery.ts`         | Atmosphere photos                                            |
-| `content/opening.ts`         | Opening greeting (Hindi / Malayalam), voice + ambience files |
-| `content/owner-character.ts` | Look of the cartoon owner in the 3D opening                  |
+| File                         | Contains                                                      |
+| ---------------------------- | ------------------------------------------------------------- |
+| `content/site.ts`            | Name, tagline, address, phone, WhatsApp, hours, socials       |
+| `content/menu.ts`            | Menu categories, items, prices, diet flags, `featured` items  |
+| `content/home.ts`            | Home page copy (all 10 sections)                              |
+| `content/story.ts`           | Our Story page                                                |
+| `content/baatein.ts`         | Nukkad Ki Baatein entries                                     |
+| `content/events.ts`          | Events (informational, walk-in only)                          |
+| `content/gallery.ts`         | Atmosphere photos                                             |
+| `content/location.ts`        | Illustrated map: café pin, nearby landmarks, `confirmed` flag |
+| `content/placeholders.ts`    | Dummy phone / Instagram values used until real ones exist     |
+| `content/opening.ts`         | Opening greeting (Hindi / Malayalam), voice + ambience files  |
+| `content/owner-character.ts` | Look of the cartoon owner in the 3D opening                   |
 
 Text is written as `{ en: "…", ml: "…" }`. English is required; missing
 Malayalam falls back to English.
+
+**Placeholders:** every build prints a list of content still marked
+`PLACEHOLDER` (or using the dummy phone number / Instagram link). The list
+should be empty before launch.
 
 The rules for every field are in `content/schema.ts`. If something is wrong
 (e.g. a negative price or a badly formatted phone number), `npm run build`

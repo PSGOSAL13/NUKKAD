@@ -48,7 +48,7 @@ function CodedOwner({ c }: { c: OwnerConfig }) {
   const seg = quality === "high" ? 24 : 14;
 
   const skin = useMat(c.skinTone, { roughness: 0.7 });
-  const skinShade = useMat(shade(c.skinTone, -0.12), { roughness: 0.7 });
+  const skinShade = useMat(shade(c.skinTone, -0.06), { roughness: 0.7 });
   const hair = useMat(c.hair.color, { roughness: 0.9 });
   const kurta = useMat(c.kurta.color);
   const trim = useMat(c.kurta.trim);
@@ -144,10 +144,10 @@ function CodedOwner({ c }: { c: OwnerConfig }) {
             {[-1, 1].map((s) => (
               <group key={s} position={[s * 0.058, 0, 0.135]}>
                 <mesh material={white} scale={[1, 1.15, 0.6]}>
-                  <sphereGeometry args={[0.03, 12, 10]} />
+                  <sphereGeometry args={[0.024, 12, 10]} />
                 </mesh>
-                <mesh position-z={0.017} material={ink}>
-                  <sphereGeometry args={[0.016, 10, 8]} />
+                <mesh position-z={0.013} material={ink}>
+                  <sphereGeometry args={[0.015, 10, 8]} />
                 </mesh>
               </group>
             ))}
@@ -155,7 +155,7 @@ function CodedOwner({ c }: { c: OwnerConfig }) {
           {/* eyebrows — slightly raised: friendly */}
           {[-1, 1].map((s) => (
             <mesh key={s} position={[s * 0.06, 0.088, 0.148]} rotation-z={s * -0.18} material={hair}>
-              <boxGeometry args={[0.065, 0.014, 0.012]} />
+              <boxGeometry args={[0.068, 0.019, 0.014]} />
             </mesh>
           ))}
           {/* nose */}
@@ -163,7 +163,7 @@ function CodedOwner({ c }: { c: OwnerConfig }) {
             <sphereGeometry args={[0.03, 10, 8]} />
           </mesh>
           {/* smile */}
-          <mesh position={[0, -0.072, 0.14]} rotation-z={Math.PI} material={mouth}>
+          <mesh position={[0, -0.07, 0.158]} rotation-z={Math.PI} material={mouth}>
             <torusGeometry args={[0.048, 0.009, 6, 16, Math.PI]} />
           </mesh>
           <FacialHair c={c} material={hair} skinShade={skinShade} />
@@ -229,6 +229,23 @@ function Hair({ c, material, seg }: { c: OwnerConfig; material: THREE.Material; 
       </group>
     );
   }
+  if (c.hair.style === "tousled") {
+    // Short, thick hair with volume swept up on top.
+    return (
+      <group>
+        <group rotation={[-0.35, 0, 0]}>
+          <mesh scale={[1.05, 1.1, 1.02]} material={material}>
+            <sphereGeometry args={[0.168, seg, seg, 0, Math.PI * 2, 0, Math.PI * 0.46]} />
+          </mesh>
+        </group>
+        {TOUSLE.map(([x, y, z, r], i) => (
+          <mesh key={i} position={[x, y, z]} scale={[1, 0.75, 1]} material={material}>
+            <sphereGeometry args={[r, 10, 8]} />
+          </mesh>
+        ))}
+      </group>
+    );
+  }
   const cap = c.hair.style === "short" ? 0.42 : 0.5;
   return (
     <group rotation={[-0.35, 0, c.hair.style === "side-part" ? 0.12 : 0]}>
@@ -243,6 +260,18 @@ function Hair({ c, material, seg }: { c: OwnerConfig; material: THREE.Material; 
     </group>
   );
 }
+
+/** Tufts for the "tousled" style: [x, y, z, radius] in head space. */
+const TOUSLE: [number, number, number, number][] = [
+  [-0.085, 0.15, 0.07, 0.065],
+  [0.0, 0.175, 0.085, 0.07],
+  [0.085, 0.15, 0.065, 0.065],
+  [-0.045, 0.19, 0.0, 0.07],
+  [0.05, 0.19, -0.01, 0.07],
+  [-0.12, 0.11, -0.01, 0.055],
+  [0.12, 0.11, -0.01, 0.055],
+  [0.0, 0.16, -0.08, 0.07],
+];
 
 function useCurls(): [number, number, number][] {
   return useMemo(() => {
@@ -281,7 +310,7 @@ function FacialHair({
     <group position={[0, -0.042, 0.155]}>
       {[-1, 1].map((s) => (
         <mesh key={s} position-x={s * 0.035} rotation-z={s * 0.35} material={material}>
-          <capsuleGeometry args={[0.014, 0.05, 4, 8]} />
+          <capsuleGeometry args={[0.011, 0.048, 4, 8]} />
         </mesh>
       ))}
     </group>
@@ -290,8 +319,12 @@ function FacialHair({
   return (
     <group>
       {moustache}
-      <mesh position={[0, -0.085, 0.03]} scale={[1, 0.7, 0.95]} material={material}>
-        <sphereGeometry args={[0.165, 16, 10, 0, Math.PI * 2, Math.PI * 0.55, Math.PI * 0.45]} />
+      <mesh position={[0, -0.09, 0.0]} scale={[1.0, 0.62, 1.07]} material={material}>
+        <sphereGeometry args={[0.165, 16, 10, 0, Math.PI * 2, Math.PI * 0.63, Math.PI * 0.37]} />
+      </mesh>
+      {/* fuller chin */}
+      <mesh position={[0, -0.168, 0.075]} scale={[1.0, 0.7, 0.75]} material={material}>
+        <sphereGeometry args={[0.055, 10, 8]} />
       </mesh>
     </group>
   );

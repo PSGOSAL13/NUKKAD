@@ -58,8 +58,9 @@ export const siteSchema = z.strictObject({
   geo: z.strictObject({ lat: z.number().min(-90).max(90), lng: z.number().min(-180).max(180) }).optional(),
   mapsUrl: z.url().optional(),
   landmark: localizedSchema.optional(),
-  phone: phoneE164.optional(),
-  whatsapp: phoneE164.optional(),
+  /** Required: the Call and WhatsApp buttons depend on these. */
+  phone: phoneE164,
+  whatsapp: phoneE164,
   email: z.email().optional(),
   social: z
     .array(
@@ -118,37 +119,87 @@ export const menuSchema = z
 export type MenuItem = z.infer<typeof menuItemSchema>;
 export type MenuCategory = z.infer<typeof menuCategorySchema>;
 
+// ---------- Illustrations (hand-drawn SVGs in components/illustrations) ----------
+
+export const foodIllustration = z.enum(["chai", "samosa", "jalebi", "bun-maska", "pakora"]);
+export type FoodIllustration = z.infer<typeof foodIllustration>;
+export const sceneIllustration = z.enum(["counter", "radio", "bicycle", "lamps", "books", "carrom"]);
+export type SceneIllustration = z.infer<typeof sceneIllustration>;
+
 // ---------- Home page copy ----------
 
 export const homeSchema = z.strictObject({
+  /** The feeling the whole page communicates. */
+  feeling: localizedSchema,
   hero: z.strictObject({ kicker: localizedSchema, title: localizedSchema, subtitle: localizedSchema }),
-  owner: z.strictObject({
-    name: localizedSchema,
-    role: localizedSchema,
+  /** 1 · Welcome: owner's greeting + how the café works. */
+  welcome: sectionCopy.extend({
     greeting: localizedSchema,
-    message: paragraphs,
-  }),
-  sitAndStay: sectionCopy.extend({
     points: z.array(z.strictObject({ title: localizedSchema, body: localizedSchema })).min(1),
   }),
-  signatureChai: sectionCopy.extend({
-    ritual: z.array(z.strictObject({ title: localizedSchema, body: localizedSchema })).min(1),
+  /** 2 · Signature experience: three hero items (by menu id) + the rotating preview. */
+  signature: sectionCopy.extend({
+    items: z
+      .array(z.strictObject({ menuItemId: slug, illustration: foodIllustration, note: localizedSchema }))
+      .length(3),
+    previewTitle: localizedSchema,
   }),
-  menuPreview: sectionCopy,
   story: sectionCopy,
+  atmosphere: sectionCopy,
   baatein: sectionCopy,
   events: sectionCopy,
-  gallery: sectionCopy,
-  visit: sectionCopy,
+  location: sectionCopy,
+  contact: sectionCopy,
 });
 export type HomeContent = z.infer<typeof homeSchema>;
 
-// ---------- Our Story ----------
+// ---------- Our Story (told as a conversation over chai) ----------
 
 export const storySchema = z.strictObject({
   intro: sectionCopy,
-  chapters: z.array(z.strictObject({ id: slug, title: localizedSchema, body: paragraphs })).min(1),
+  founder: z.strictObject({ name: localizedSchema, role: localizedSchema }),
+  /** Questions a guest might ask over chai, answered by the founder. */
+  conversation: z
+    .array(z.strictObject({ id: slug, question: localizedSchema, answer: paragraphs }))
+    .min(1)
+    .superRefine(uniqueIds),
 });
+
+// ---------- Location & illustrated map ----------
+
+export const locationSchema = z.strictObject({
+  /** False until the premises are final — shows an "address to be confirmed" note. */
+  confirmed: z.boolean(),
+  /** Café pin on the illustrated map, in % of map width/height. */
+  cafe: z.strictObject({ x: z.number().min(5).max(95), y: z.number().min(5).max(95) }),
+  landmarks: z
+    .array(
+      z.strictObject({
+        id: slug,
+        label: localizedSchema,
+        kind: z.enum([
+          "temple",
+          "church",
+          "mosque",
+          "bus",
+          "rail",
+          "college",
+          "park",
+          "beach",
+          "market",
+          "hospital",
+        ]),
+        x: z.number().min(3).max(97),
+        y: z.number().min(3).max(97),
+        /** Walking time to the café, e.g. "5 min walk". */
+        distance: localizedSchema.optional(),
+      }),
+    )
+    .max(8)
+    .superRefine(uniqueIds),
+  directions: localizedSchema.optional(),
+});
+export type LocationContent = z.infer<typeof locationSchema>;
 
 // ---------- Nukkad Ki Baatein (stories & conversations written by the café) ----------
 
@@ -194,6 +245,8 @@ export const gallerySchema = z
         .string()
         .regex(/^\/[\w/.-]+\.(jpe?g|png|webp|avif)$/i)
         .optional(),
+      /** Illustration shown when there is no photo (or alongside photos as a mix). */
+      illustration: sceneIllustration,
       alt: localizedSchema,
       caption: localizedSchema.optional(),
     }),
@@ -220,7 +273,7 @@ const proportion = z.number().min(0.85).max(1.15);
 
 export const ownerCharacterSchema = z.strictObject({
   skinTone: hex,
-  hair: z.strictObject({ color: hex, style: z.enum(["short", "side-part", "curly", "bald"]) }),
+  hair: z.strictObject({ color: hex, style: z.enum(["short", "side-part", "tousled", "curly", "bald"]) }),
   facialHair: z.enum(["none", "moustache", "beard", "stubble"]),
   glasses: z.boolean(),
   build: z.strictObject({ height: proportion, width: proportion }),

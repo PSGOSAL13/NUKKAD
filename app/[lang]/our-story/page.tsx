@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { FounderPortrait } from "@/components/illustrations/FounderPortrait";
+import { Conversation } from "@/components/story/Conversation";
 import { Container } from "@/components/ui/Container";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Paragraphs } from "@/components/ui/Paragraphs";
 import { t } from "@/i18n/config";
-import { story } from "@/lib/content";
+import { ownerCharacter, story } from "@/lib/content";
 import { resolveLocale } from "@/lib/locale-params";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/our-story">): Promise<Metadata> {
@@ -11,9 +13,11 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/our-story"
   return { title: dict.nav.story, description: t(story.intro.body[0], locale) };
 }
 
+/** Our Story: the founder's story as a full conversation over chai. */
 export default async function StoryPage({ params }: PageProps<"/[lang]/our-story">) {
-  const { locale } = await resolveLocale(params);
+  const { locale, dict } = await resolveLocale(params);
   const i = story.intro;
+  const name = t(story.founder.name, locale);
   return (
     <>
       <PageHeader
@@ -21,21 +25,13 @@ export default async function StoryPage({ params }: PageProps<"/[lang]/our-story
         title={t(i.title, locale)}
         intro={<Paragraphs items={i.body} locale={locale} className="text-xl" />}
       />
-      <Container width="prose" className="space-y-14 py-16">
-        {story.chapters.map((c, n) => (
-          <section key={c.id} id={c.id} aria-labelledby={`${c.id}-title`}>
-            <p
-              className="font-display text-5xl text-yellow [-webkit-text-stroke:1.5px_var(--color-ink)]"
-              aria-hidden="true"
-            >
-              {String(n + 1).padStart(2, "0")}
-            </p>
-            <h2 id={`${c.id}-title`} className="mt-1 text-3xl font-bold">
-              {t(c.title, locale)}
-            </h2>
-            <Paragraphs items={c.body} locale={locale} className="mt-4" />
-          </section>
-        ))}
+      <Container className="grid items-start gap-12 py-16 lg:grid-cols-[20rem_1fr]">
+        <div className="mx-auto w-full max-w-xs lg:sticky lg:top-28">
+          <FounderPortrait owner={ownerCharacter} label={dict.common.founderPortrait} />
+          <p className="mt-4 text-center font-display text-2xl text-red">{name}</p>
+          <p className="text-center text-ink-muted">{t(story.founder.role, locale)}</p>
+        </div>
+        <Conversation exchanges={story.conversation} founderName={name} locale={locale} dict={dict} />
       </Container>
     </>
   );

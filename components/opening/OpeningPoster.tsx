@@ -159,12 +159,25 @@ export function OpeningPoster({ owner, className }: { owner: OwnerCharacter; cla
         <path d="M-24 58h22l-3 22h-16z" fill="#B5653A" />
         <path d="M-14 52c-5-9 5-13 0-22" stroke="#F6EBD3" strokeWidth="3" fill="none" strokeLinecap="round" />
         <circle cx="0" cy="-6" r="30" fill={owner.skinTone} />
-        <path
-          d="M-30 -10 Q-28 -40 0 -38 Q28 -40 30 -12 Q20 -28 0 -28 Q-18 -28 -30 -10Z"
-          fill={owner.hair.color}
-        />
+        {owner.hair.style !== "bald" && (
+          <path
+            d="M-30 -10 Q-28 -40 0 -38 Q28 -40 30 -12 Q20 -28 0 -28 Q-18 -28 -30 -10Z"
+            fill={owner.hair.color}
+          />
+        )}
+        {owner.hair.style === "tousled" && (
+          <g fill={owner.hair.color}>
+            <circle cx="-14" cy="-36" r="10" />
+            <circle cx="2" cy="-41" r="11" />
+            <circle cx="17" cy="-35" r="9" />
+          </g>
+        )}
+        <path d="M-17 -15 h11 M6 -15 h11" stroke={owner.hair.color} strokeWidth="3.5" strokeLinecap="round" />
         <circle cx="-10" cy="-6" r="3.5" fill="#2B1D16" />
         <circle cx="10" cy="-6" r="3.5" fill="#2B1D16" />
+        {owner.facialHair === "beard" && (
+          <path d="M-29 -2 Q-27 34 0 37 Q27 34 29 -2 Q23 22 0 24 Q-23 22 -29 -2Z" fill={owner.hair.color} />
+        )}
         {owner.facialHair !== "none" && owner.facialHair !== "stubble" && (
           <path d="M-14 6 Q0 0 14 6 Q0 10 -14 6Z" fill={owner.hair.color} />
         )}

@@ -15,10 +15,13 @@ export function RotatingMenuPreview({
   items,
   pauseLabel,
   playLabel,
+  controlClassName = "text-ink-muted hover:text-red",
 }: {
   items: MenuItemView[];
   pauseLabel: string;
   playLabel: string;
+  /** Colours for the pause/play control (depends on the section background). */
+  controlClassName?: string;
 }) {
   const [offset, setOffset] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -67,7 +70,7 @@ export function RotatingMenuPreview({
           type="button"
           onClick={() => setPaused((p) => !p)}
           aria-pressed={paused}
-          className="mt-4 text-sm font-semibold text-ink-muted underline underline-offset-4 hover:text-red"
+          className={`mt-4 text-sm font-semibold underline underline-offset-4 ${controlClassName}`}
         >
           {paused ? playLabel : pauseLabel}
         </button>

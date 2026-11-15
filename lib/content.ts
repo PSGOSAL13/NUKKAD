@@ -4,13 +4,16 @@ import { baateinData } from "@/content/baatein";
 import { eventsData } from "@/content/events";
 import { galleryData } from "@/content/gallery";
 import { homeData } from "@/content/home";
+import { locationData } from "@/content/location";
 import { menuData } from "@/content/menu";
 import {
   baateinSchema,
   eventsSchema,
   gallerySchema,
   homeSchema,
+  locationSchema,
   menuSchema,
+  type MenuItem,
   openingSchema,
   ownerCharacterSchema,
   siteSchema,
@@ -41,6 +44,24 @@ export const baatein = load("baatein", baateinSchema, baateinData);
 export const gallery = load("gallery", gallerySchema, galleryData);
 export const opening = load("opening", openingSchema, openingData);
 export const ownerCharacter = load("owner-character", ownerCharacterSchema, ownerCharacterData);
+export const location = load("location", locationSchema, locationData);
+
+const menuById = new Map(menu.flatMap((c) => c.items).map((i) => [i.id, i] as const));
+
+/** The three signature items, resolved against the menu (build fails on a bad id). */
+export const signatureItems: {
+  item: MenuItem;
+  illustration: (typeof home.signature.items)[number]["illustration"];
+  note: (typeof home.signature.items)[number]["note"];
+}[] = home.signature.items.map((s) => {
+  const item = menuById.get(s.menuItemId);
+  if (!item) {
+    throw new Error(
+      `content/home.ts: signature item "${s.menuItemId}" is not in content/menu.ts. Valid ids: ${[...menuById.keys()].join(", ")}`,
+    );
+  }
+  return { item, illustration: s.illustration, note: s.note };
+});
 
 const today = new Date().toISOString().slice(0, 10);
 /** Events still current at build time. */

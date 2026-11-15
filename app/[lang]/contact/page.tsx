@@ -23,13 +23,11 @@ export default async function ContactPage({ params }: PageProps<"/[lang]/contact
       />
       <Container className="space-y-10 py-14">
         <div className="space-y-4 text-lg">
-          {site.phone && (
-            <p>
-              <a href={telHref(site.phone)} className="font-display text-4xl text-red">
-                {formatPhone(site.phone)}
-              </a>
-            </p>
-          )}
+          <p>
+            <a href={telHref(site.phone)} className="font-display text-4xl text-red">
+              {formatPhone(site.phone)}
+            </a>
+          </p>
           {site.email && (
             <p>
               <a
@@ -40,7 +38,7 @@ export default async function ContactPage({ params }: PageProps<"/[lang]/contact
               </a>
             </p>
           )}
-          <ContactActions dict={dict} />
+          <ContactActions dict={dict} size="lg" />
         </div>
         <SeatingPolicy locale={locale} dict={dict} />
       </Container>

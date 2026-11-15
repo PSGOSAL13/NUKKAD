@@ -28,6 +28,25 @@ export function formatPhone(e164: string): string {
   return m ? `+91 ${m[1]} ${m[2]}` : e164;
 }
 
+/**
+ * Google Maps directions link (official Maps URLs, no API key).
+ * Prefers an exact share link, then coordinates, then the address text —
+ * placeholder text is never sent to Google.
+ */
+export function directionsHref(s: {
+  mapsUrl?: string;
+  geo?: { lat: number; lng: number };
+  address: { line1: { en: string }; city: { en: string }; state: { en: string } };
+}): string {
+  if (s.mapsUrl) return s.mapsUrl;
+  const base = "https://www.google.com/maps/dir/?api=1&destination=";
+  if (s.geo) return `${base}${s.geo.lat},${s.geo.lng}`;
+  const parts = [s.address.line1.en, s.address.city.en, s.address.state.en].filter(
+    (p) => !p.includes("PLACEHOLDER"),
+  );
+  return base + encodeURIComponent(["NUKKAD", ...parts].join(", "));
+}
+
 export const telHref = (e164: string) => `tel:${e164}`;
 export const whatsappHref = (e164: string) => `https://wa.me/${e164.replace(/^\+/, "")}`;
 
