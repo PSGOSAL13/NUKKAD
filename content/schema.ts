@@ -199,3 +199,34 @@ export const gallerySchema = z
     }),
   )
   .superRefine(uniqueIds);
+
+// ---------- Cinematic opening ----------
+
+const audioPath = z
+  .string()
+  .regex(/^\/audio\/[\w.-]+\.(mp3|m4a|aac|ogg|opus|webm)$/i, "put audio in /public/audio/");
+const greeting = z.strictObject({ label: text, text, voice: audioPath.optional() });
+
+export const openingSchema = z.strictObject({
+  greetings: z.strictObject({ hi: greeting, ml: greeting }),
+  translation: localizedSchema,
+  ambience: audioPath.optional(),
+});
+export type OpeningContent = z.infer<typeof openingSchema>;
+export type GreetingLang = keyof OpeningContent["greetings"];
+
+const hex = z.string().regex(/^#[0-9a-fA-F]{6}$/, "hex colour like #8F2925");
+const proportion = z.number().min(0.85).max(1.15);
+
+export const ownerCharacterSchema = z.strictObject({
+  skinTone: hex,
+  hair: z.strictObject({ color: hex, style: z.enum(["short", "side-part", "curly", "bald"]) }),
+  facialHair: z.enum(["none", "moustache", "beard", "stubble"]),
+  glasses: z.boolean(),
+  build: z.strictObject({ height: proportion, width: proportion }),
+  kurta: z.strictObject({ color: hex, trim: hex }),
+  vest: z.strictObject({ enabled: z.boolean(), color: hex }),
+  trousers: hex,
+  shoes: hex,
+});
+export type OwnerCharacter = z.infer<typeof ownerCharacterSchema>;

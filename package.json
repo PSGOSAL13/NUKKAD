@@ -10,13 +10,18 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check": "npm run lint && npm run typecheck && npm run format:check && npm run build",
-    "brand:logos": "node brand/tools/build-logos.mjs"
+    "brand:logos": "node brand/tools/build-logos.mjs",
+    "postbuild": "node scripts/fix-export-segments.mjs"
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
+    "@react-three/fiber": "^9.8.2",
     "clsx": "^2.1.1",
+    "gsap": "^3.15.1",
     "next": "16.4.6",
     "react": "19.3.0",
     "react-dom": "19.3.0",
+    "three": "^0.187.0",
     "zod": "^4.6.7"
   },
   "devDependencies": {
@@ -24,6 +29,7 @@
     "@types/node": "^24.19.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/three": "^0.187.0",
     "eslint": "^9",
     "eslint-config-next": "16.4.6",
     "prettier": "^3.10.1",

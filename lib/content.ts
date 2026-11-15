@@ -11,9 +11,13 @@ import {
   gallerySchema,
   homeSchema,
   menuSchema,
+  openingSchema,
+  ownerCharacterSchema,
   siteSchema,
   storySchema,
 } from "@/content/schema";
+import { openingData } from "@/content/opening";
+import { ownerCharacterData } from "@/content/owner-character";
 import { siteData } from "@/content/site";
 import { storyData } from "@/content/story";
 
@@ -35,6 +39,8 @@ export const home = load("home", homeSchema, homeData);
 export const story = load("story", storySchema, storyData);
 export const baatein = load("baatein", baateinSchema, baateinData);
 export const gallery = load("gallery", gallerySchema, galleryData);
+export const opening = load("opening", openingSchema, openingData);
+export const ownerCharacter = load("owner-character", ownerCharacterSchema, ownerCharacterData);
 
 const today = new Date().toISOString().slice(0, 10);
 /** Events still current at build time. */

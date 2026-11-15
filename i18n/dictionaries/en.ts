@@ -48,6 +48,19 @@ export const en = {
     notFoundTitle: "Arre! Wrong turn.",
     notFoundBody: "This corner doesn't exist. Let's get you back to the chai.",
   },
+  opening: {
+    comeSitStay: "Come, Sit & Stay",
+    skip: "Skip",
+    continue: "Continue",
+    mute: "Mute sound",
+    unmute: "Turn sound on",
+    greetingLanguage: "Greeting language",
+    lookAround: "Drag to look around",
+    sceneDescription:
+      "An illustrated North Indian street corner at dusk: the NUKKAD chai shop with a wooden signboard, a striped awning, a colourful chai counter, a street lamp, an old bicycle and benches. The owner stands outside holding a steaming kulhad of chai.",
+    interiorDescription:
+      "Inside the café: a rustic wooden chai counter, communal benches, small tables with carrom and ludo boards, a vintage radio, a bookshelf, a nostalgia wall and a chalkboard wall of chai and conversations.",
+  },
   footer: {
     rights: "All rights reserved.",
     fssai: "FSSAI Lic. No.",

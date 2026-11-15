@@ -23,15 +23,17 @@ Fully static Next.js site in English and Malayalam (`/en/`, `/ml/`). The visitor
 
 All editable information lives in **`content/`** — never in components.
 
-| File                 | Contains                                                     |
-| -------------------- | ------------------------------------------------------------ |
-| `content/site.ts`    | Name, tagline, address, phone, WhatsApp, hours, socials      |
-| `content/menu.ts`    | Menu categories, items, prices, diet flags, `featured` items |
-| `content/home.ts`    | Home page copy (all 10 sections)                             |
-| `content/story.ts`   | Our Story page                                               |
-| `content/baatein.ts` | Nukkad Ki Baatein entries                                    |
-| `content/events.ts`  | Events (informational, walk-in only)                         |
-| `content/gallery.ts` | Atmosphere photos                                            |
+| File                         | Contains                                                     |
+| ---------------------------- | ------------------------------------------------------------ |
+| `content/site.ts`            | Name, tagline, address, phone, WhatsApp, hours, socials      |
+| `content/menu.ts`            | Menu categories, items, prices, diet flags, `featured` items |
+| `content/home.ts`            | Home page copy (all 10 sections)                             |
+| `content/story.ts`           | Our Story page                                               |
+| `content/baatein.ts`         | Nukkad Ki Baatein entries                                    |
+| `content/events.ts`          | Events (informational, walk-in only)                         |
+| `content/gallery.ts`         | Atmosphere photos                                            |
+| `content/opening.ts`         | Opening greeting (Hindi / Malayalam), voice + ambience files |
+| `content/owner-character.ts` | Look of the cartoon owner in the 3D opening                  |
 
 Text is written as `{ en: "…", ml: "…" }`. English is required; missing
 Malayalam falls back to English.
@@ -42,16 +44,39 @@ stops and tells you exactly which field to fix.
 
 Interface labels (navigation, buttons, day names) are in `i18n/dictionaries/`.
 
+## Cinematic 3D opening
+
+`components/opening/OpeningExperience.tsx` is a self-contained, reusable
+component: street scene → owner's greeting → "Come, Sit & Stay" → shutter
+opens, camera enters, chai is poured → café interior → Continue.
+
+- **Quality is automatic.** Capable devices get full 3D (shadows, more
+  lights); weaker devices get simplified 3D; no WebGL or Data Saver gets an
+  illustrated 2D version. If the frame rate drops, it steps down by itself.
+  Reduced-motion users get cuts instead of camera flights.
+- **Loaded last.** The 3D code (~185 KB gzipped) downloads only after the
+  page has loaded, and only on devices that will use it. Rendering pauses when
+  the opening is scrolled out of view.
+- **Sound** is off for first-time visitors; the choice and the greeting
+  language are remembered. Voice files go in `public/audio/` — see
+  `content/opening.ts` for the recording spec.
+- **Test a quality level** on any device: add `?opening-quality=high`,
+  `low` or `2d` to the home page URL.
+- **Blender models:** everything is built in code today. To swap in a GLB,
+  see `three/models/registry.ts` (budgets and the optimisation command).
+
 ## Project structure
 
 ```
 app/            routes — app/[lang]/ holds every page, app/(root)/ sends "/" to the remembered language
 brand/          brand guidelines, master logo files, logo tools  (see brand/README.md)
-components/     brand/ (Logo), ui/ (Button, Tag…), layout/ (Header, Footer), sections/, menu/
+components/     brand/ (Logo), ui/ (Button, Tag…), layout/ (Header, Footer), sections/, menu/, opening/
 content/        ✏️ editable café data + validation schema
 i18n/           languages, fallback logic, interface translations
 lib/            helpers (content loading, SEO, formatting)
+scripts/        build helpers (post-build fix for a Next.js Windows export bug)
 styles/         global CSS + design tokens
+three/          3D opening scene: street/, interior/, character/, models/ (GLB slots)
 public/         static files served as-is
 ```
 

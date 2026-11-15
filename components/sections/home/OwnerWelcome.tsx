@@ -7,7 +7,12 @@ import { home } from "@/lib/content";
 export function OwnerWelcome({ locale }: { locale: Locale }) {
   const o = home.owner;
   return (
-    <section aria-labelledby="welcome-title" className="py-20">
+    <section
+      id="welcome"
+      tabIndex={-1}
+      aria-labelledby="welcome-title"
+      className="scroll-mt-20 py-20 outline-none"
+    >
       <Container width="prose">
         <figure className="relative rounded-xl border-2 border-ink bg-paper p-8 shadow-print sm:p-10">
           <p id="welcome-title" className="font-display text-3xl text-red sm:text-4xl">
