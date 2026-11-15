@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { locales, t } from "@/i18n/config";
-import { site } from "@/lib/content";
+import { buildNow, site } from "@/lib/content";
 import { fontVariables } from "@/lib/fonts";
 import { resolveLocale } from "@/lib/locale-params";
 import "@/styles/globals.css";
@@ -36,6 +37,16 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
         >
           {dict.common.skipToContent}
         </a>
+        {site.announcement && (!site.announcement.until || site.announcement.until >= buildNow.date) && (
+          <AnnouncementBar
+            text={t(site.announcement.text, locale)}
+            link={site.announcement.link}
+            linkLabel={site.announcement.linkLabel && t(site.announcement.linkLabel, locale)}
+            until={site.announcement.until}
+            locale={locale}
+            label={dict.common.announcement}
+          />
+        )}
         <Header locale={locale} dict={dict} />
         <main id="main" tabIndex={-1} className="flex-1 outline-none">
           {children}

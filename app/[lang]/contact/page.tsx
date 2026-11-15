@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { DeliveryLinks } from "@/components/sections/DeliveryLinks";
 import { ContactActions, SeatingPolicy } from "@/components/sections/VisitDetails";
 import { Container } from "@/components/ui/Container";
 import { PageHeader } from "@/components/ui/PageHeader";
@@ -39,6 +40,7 @@ export default async function ContactPage({ params }: PageProps<"/[lang]/contact
             </p>
           )}
           <ContactActions dict={dict} size="lg" />
+          <DeliveryLinks dict={dict} className="text-ink-muted" />
         </div>
         <SeatingPolicy locale={locale} dict={dict} />
       </Container>

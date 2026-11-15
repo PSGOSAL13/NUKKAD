@@ -34,6 +34,8 @@ export const ml: Dictionary = {
     groupBookingTitle: "ഗ്രൂപ്പ് ബുക്കിംഗ്",
     noRegistration: "രജിസ്ട്രേഷൻ ആവശ്യമില്ല — നേരിട്ട് വരൂ.",
     translationPending: "ഇംഗ്ലീഷിൽ കാണിക്കുന്നു",
+    announcement: "അറിയിപ്പ്",
+    alsoOn: "ഇവിടെയും",
     instagram: "ഇൻസ്റ്റാഗ്രാം",
     readFullStory: "മുഴുവൻ സംഭാഷണം വായിക്കുക",
     you: "നിങ്ങൾ",

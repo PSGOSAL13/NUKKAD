@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
 import { StreetScene } from "@/components/illustrations/StreetScene";
+import { DeliveryLinks } from "@/components/sections/DeliveryLinks";
 import { Address, HoursList } from "@/components/sections/VisitDetails";
 import { buttonClasses } from "@/components/ui/Button";
 import { t, type Locale } from "@/i18n/config";
@@ -75,6 +76,7 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
                 {dict.common.instagram}
               </a>
             )}
+            <DeliveryLinks dict={dict} className="text-sm text-cream/90" />
           </div>
         </div>
 

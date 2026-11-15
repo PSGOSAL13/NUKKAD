@@ -37,6 +37,8 @@ export const en = {
     groupBookingTitle: "Group bookings",
     noRegistration: "No registration — just walk in.",
     translationPending: "Shown in English",
+    announcement: "Announcement",
+    alsoOn: "Also on",
     instagram: "Instagram",
     readFullStory: "Read the whole conversation",
     you: "You",

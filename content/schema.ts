@@ -71,6 +71,24 @@ export const siteSchema = z.strictObject({
     )
     .default([]),
   hours: z.array(z.strictObject({ days: z.array(dayEnum).min(1), open: time24h, close: time24h })).min(1),
+  /** Optional strip at the top of every page. Disappears by itself after `until`. */
+  announcement: z
+    .strictObject({
+      text: localizedSchema,
+      /** Optional link: a page on this site ("/menu/") or a full https:// URL. */
+      link: z.union([z.string().regex(/^\/[\w\-/#]*$/), z.url({ protocol: /^https$/ })]).optional(),
+      linkLabel: localizedSchema.optional(),
+      /** Last day to show it, "YYYY-MM-DD" (Indian time). */
+      until: isoDate.optional(),
+    })
+    .optional(),
+  /** Optional delivery-platform pages (external — NUKKAD's own site has no ordering). */
+  delivery: z
+    .strictObject({
+      swiggy: z.url({ protocol: /^https$/ }).optional(),
+      zomato: z.url({ protocol: /^https$/ }).optional(),
+    })
+    .optional(),
   seating: localizedSchema,
   groupBooking: z.strictObject({
     minPeople: z.number().int().min(2),

@@ -36,6 +36,18 @@ export const siteData = {
   // email: "hello@yourdomain.in",
   social: [{ platform: "instagram", url: PLACEHOLDER_INSTAGRAM }], // PLACEHOLDER — your Instagram profile URL
   hours: [{ days: ["mon", "tue", "wed", "thu", "fri", "sat", "sun"], open: "08:00", close: "20:00" }],
+  // Optional announcement strip at the top of every page (remove or comment out when not needed).
+  // announcement: {
+  //   text: { en: "Closed on 26 January for Republic Day", ml: "ജനുവരി 26-ന് അവധി" },
+  //   link: "/nukkad-ki-baatein/#events",          // optional: a page on this site or an https:// link
+  //   linkLabel: { en: "See events" },               // optional
+  //   until: "2027-01-26",                           // optional: last day to show it
+  // },
+  // Optional delivery-platform links (shown in the footer and on the Contact page).
+  // delivery: {
+  //   swiggy: "https://www.swiggy.com/…",
+  //   zomato: "https://www.zomato.com/…",
+  // },
   seating: {
     en: "Walk in any time — seating is first come, first served. No reservations needed.",
     ml: "എപ്പോൾ വേണമെങ്കിലും വരാം — ആദ്യം വരുന്നവർക്ക് ആദ്യം ഇരിപ്പിടം. റിസർവേഷൻ ആവശ്യമില്ല.",
