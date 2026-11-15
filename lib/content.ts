@@ -1,8 +1,21 @@
 import "server-only";
 import { z } from "zod";
+import { baateinData } from "@/content/baatein";
+import { eventsData } from "@/content/events";
+import { galleryData } from "@/content/gallery";
+import { homeData } from "@/content/home";
 import { menuData } from "@/content/menu";
-import { menuSchema, siteSchema } from "@/content/schema";
+import {
+  baateinSchema,
+  eventsSchema,
+  gallerySchema,
+  homeSchema,
+  menuSchema,
+  siteSchema,
+  storySchema,
+} from "@/content/schema";
 import { siteData } from "@/content/site";
+import { storyData } from "@/content/story";
 
 /**
  * Validated content. Parsing happens once at build time; any mistake in
@@ -18,3 +31,14 @@ function load<T extends z.ZodType>(name: string, schema: T, data: unknown): z.in
 
 export const site = load("site", siteSchema, siteData);
 export const menu = load("menu", menuSchema, menuData);
+export const home = load("home", homeSchema, homeData);
+export const story = load("story", storySchema, storyData);
+export const baatein = load("baatein", baateinSchema, baateinData);
+export const gallery = load("gallery", gallerySchema, galleryData);
+
+const today = new Date().toISOString().slice(0, 10);
+/** Events still current at build time. */
+export const events = load("events", eventsSchema, eventsData).filter((e) => !e.endsOn || e.endsOn >= today);
+
+/** Available items marked `featured`, for the home page preview. */
+export const featuredMenuItems = menu.flatMap((c) => c.items).filter((i) => i.featured && i.available);

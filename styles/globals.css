@@ -1,21 +1,166 @@
 @import "tailwindcss";
 
-/*
- * Design tokens. Placeholder neutral values for M0 —
- * the NUKKAD palette and typography are defined in M1.
- */
+/* =====================================================================
+   NUKKAD DESIGN TOKENS
+   Single source of truth for colour, type, shape and motion.
+   Documented in brand/README.md. Use the Tailwind utilities generated
+   from these (bg-red, text-ink, font-display, shadow-print, …) — never
+   hard-code hex values in components.
+   ===================================================================== */
+
+@theme {
+  /* Reset Tailwind's default palette: only brand colours exist. */
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  /* Primary brand colours */
+  --color-red: #8f2925; /* Deep Red — signage, headings, primary actions */
+  --color-yellow: #e9b83e; /* Warm Yellow — highlights, buttons, fills (never text on cream) */
+  --color-cream: #f6ebd3; /* Cream — the page */
+
+  /* Supporting colours (derived; used only where the primaries can't do the job) */
+  --color-red-dark: #72211e; /* hover/pressed red, kulhad rim — 9.1:1 on cream */
+  --color-red-soft: #e3cac9; /* tinted panels */
+  --color-yellow-soft: #faedcf; /* highlighted rows, notes */
+  --color-cream-dark: #e5d8bf; /* borders, dividers, counters */
+  --color-paper: #fbf5e8; /* cards on cream (aged paper) */
+  --color-ink: #2b1d16; /* body text — "chai patti" brown-black, 13.7:1 on cream */
+  --color-ink-muted: #6b5848; /* secondary text — 5.7:1 on cream */
+  --color-clay: #b5653a; /* illustration only (kulhad terracotta) — not for text */
+
+  /* Functional: FSSAI-style diet marks */
+  --color-veg: #2a6e2e;
+  --color-nonveg: #7a3e1d;
+
+  /* Typography — families are wired per language in app/[lang]/layout.tsx */
+  --font-display: var(--font-yatra), var(--font-heading-stack), serif;
+  --font-heading: var(--font-heading-stack);
+  --font-sans: var(--font-body-stack);
+
+  /* Shape */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem; /* buttons */
+  --radius-lg: 0.875rem; /* cards */
+  --radius-xl: 1.5rem;
+
+  /* Hard offset "screen-print" shadows instead of soft blur */
+  --shadow-print-sm: 2px 2px 0 0 var(--color-ink);
+  --shadow-print: 4px 4px 0 0 var(--color-ink);
+  --shadow-print-lg: 6px 6px 0 0 var(--color-ink);
+  --shadow-print-red: 4px 4px 0 0 var(--color-red);
+
+  /* Motion */
+  --ease-pour: cubic-bezier(0.22, 1, 0.36, 1); /* smooth settle */
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1); /* playful overshoot */
+  --animate-steam: steam 3.2s var(--ease-pour) infinite;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes steam {
+    0% {
+      transform: translateY(4px) scaleY(0.9);
+      opacity: 0;
+    }
+    30% {
+      opacity: 0.9;
+    }
+    100% {
+      transform: translateY(-10px) scaleY(1.05);
+      opacity: 0;
+    }
+  }
+}
+
+/* Font stacks per script. Malayalam pages swap in Malayalam faces. */
 :root {
-  --background: #fffaf2;
-  --foreground: #1f1a14;
+  --font-heading-stack: var(--font-baloo), system-ui, sans-serif;
+  --font-body-stack: var(--font-mukta), system-ui, sans-serif;
+}
+:root:lang(ml) {
+  --font-heading-stack: var(--font-baloo-chettan), var(--font-baloo), system-ui, sans-serif;
+  --font-body-stack: var(--font-noto-ml), var(--font-mukta), system-ui, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+@layer base {
+  html {
+    background: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-tap-highlight-color: transparent;
+  }
+  :root:lang(ml) body {
+    /* Malayalam glyphs are taller; a touch more line height keeps them readable. */
+    line-height: 1.7;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+    text-wrap: balance;
+  }
+  ::selection {
+    background: var(--color-yellow);
+    color: var(--color-ink);
+  }
+  /* One consistent, highly visible focus style everywhere. */
+  :focus-visible {
+    outline: 3px solid var(--color-yellow);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 5px var(--color-ink);
+    border-radius: var(--radius-sm);
+  }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: system-ui, "Noto Sans", "Noto Sans Devanagari", "Noto Sans Malayalam", sans-serif;
+/* ---------------------------------------------------------------------
+   Textures — pure CSS/SVG, no image downloads.
+   --------------------------------------------------------------------- */
+@utility texture-paper {
+  /* Aged-paper grain over any background colour. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .17 0 0 0 0 .11 0 0 0 0 .08 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+@utility texture-halftone {
+  /* Vintage-print dots. Colour follows the text colour of the element. */
+  background-image: radial-gradient(currentColor 1px, transparent 1.4px);
+  background-size: 9px 9px;
+}
+@utility texture-awning {
+  /* Chai-stall tarpaulin: striped band with rounded flaps hanging below.
+     One flap per stripe. Use h-7 (28px): 14px band + 14px flaps.
+     Colours: set --awning-a / --awning-b (default red / yellow). */
+  background: repeating-linear-gradient(
+    90deg,
+    var(--awning-a, var(--color-red)) 0 28px,
+    var(--awning-b, var(--color-yellow)) 28px 56px
+  );
+  mask:
+    linear-gradient(#000 0 0) top / 100% calc(100% - 14px) no-repeat,
+    radial-gradient(circle 14px at 50% 0, #000 97%, transparent) bottom / 28px 14px repeat-x;
+}
+@utility hand-underline {
+  /* Hand-painted brush underline under a word. */
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 10' preserveAspectRatio='none'%3E%3Cpath d='M2 6.5C30 3 60 8 118 4' fill='none' stroke='%23E9B83E' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E")
+    bottom / 100% 0.45em no-repeat;
+  padding-bottom: 0.1em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
