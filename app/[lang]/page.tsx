@@ -7,6 +7,7 @@ import { LocationSection } from "@/components/sections/home/LocationSection";
 import { SignatureExperience } from "@/components/sections/home/SignatureExperience";
 import { StorySection } from "@/components/sections/home/StorySection";
 import { Welcome } from "@/components/sections/home/Welcome";
+import { LocalBusinessJsonLd } from "@/components/seo/LocalBusinessJsonLd";
 import { t } from "@/i18n/config";
 import { home, opening, ownerCharacter } from "@/lib/content";
 import { resolveLocale } from "@/lib/locale-params";
@@ -19,6 +20,7 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
   const { locale, dict } = await resolveLocale(params);
   return (
     <>
+      <LocalBusinessJsonLd locale={locale} />
       {/* 1 · Welcome: cinematic opening + the owner's welcome */}
       <OpeningExperience
         labels={dict.opening}

@@ -43,11 +43,34 @@ export function canvasTexture(w: number, h: number, draw: Draw, opts: { repeat?:
 }
 
 /** Light paper/plaster grain so flat colours don't look plasticky. */
-function grain(ctx: CanvasRenderingContext2D, w: number, h: number, alpha = 0.06, n = 2200) {
-  for (let i = 0; i < n; i++) {
-    ctx.fillStyle = `rgba(43,29,22,${Math.random() * alpha})`;
-    ctx.fillRect(Math.random() * w, Math.random() * h, 2, 2);
+/**
+ * Light paper/plaster grain. One shared 128×128 noise tile is generated once
+ * and painted as a pattern — a single fill per texture instead of thousands
+ * of tiny rectangles (much cheaper on phones).
+ */
+let noiseTile: HTMLCanvasElement | null = null;
+function getNoiseTile() {
+  if (!noiseTile) {
+    noiseTile = document.createElement("canvas");
+    noiseTile.width = noiseTile.height = 128;
+    const c = noiseTile.getContext("2d")!;
+    const img = c.createImageData(128, 128);
+    for (let i = 0; i < img.data.length; i += 4) {
+      img.data[i] = 43;
+      img.data[i + 1] = 29;
+      img.data[i + 2] = 22;
+      img.data[i + 3] = Math.random() < 0.18 ? Math.random() * 255 : 0;
+    }
+    c.putImageData(img, 0, 0);
   }
+  return noiseTile;
+}
+function grain(ctx: CanvasRenderingContext2D, w: number, h: number, alpha = 0.06) {
+  ctx.save();
+  ctx.globalAlpha = Math.min(1, alpha * 2);
+  ctx.fillStyle = ctx.createPattern(getNoiseTile(), "repeat")!;
+  ctx.fillRect(0, 0, w, h);
+  ctx.restore();
 }
 
 // ---------- Street ----------
@@ -90,7 +113,7 @@ export const awningTexture = () =>
       ctx.arc(i * sw + sw / 2, band, sw / 2, 0, Math.PI);
       ctx.fill();
     }
-    grain(ctx, w, band, 0.1, 900);
+    grain(ctx, w, band, 0.1);
   });
 
 /** Wooden signboard with the reverse NUKKAD logo painted on. */
@@ -181,7 +204,7 @@ export const counterFrontTexture = () =>
     ctx.fillStyle = P.yellow;
     ctx.font = brandFont(34);
     ctx.fillText("★ Kulhad Special ★", w / 2, h * 0.8);
-    grain(ctx, w, h, 0.12, 1200);
+    grain(ctx, w, h, 0.12);
   });
 
 /** Invented vintage posters (no real brands). */
@@ -253,7 +276,7 @@ export const posterTexture = (index: number) =>
     ctx.fillStyle = p.fg;
     ctx.font = brandFont(24);
     ctx.fillText(p.sub, w / 2, h - 40);
-    grain(ctx, w, h, 0.14, 1600);
+    grain(ctx, w, h, 0.14);
   });
 
 // ---------- Interior ----------
@@ -273,7 +296,7 @@ export const floorTexture = () =>
         const cut = Math.random() * h;
         ctx.fillRect(i * plank, cut, plank, 2);
       }
-      grain(ctx, w, h, 0.1, 3000);
+      grain(ctx, w, h, 0.1);
     },
     { repeat: [3, 3] },
   );
@@ -368,7 +391,7 @@ export const nostalgiaTexture = (index: number) =>
       ctx.bezierCurveTo(120, 150, 90, 140, 60, 190);
       ctx.stroke();
     }
-    grain(ctx, w, h, 0.18, 1500);
+    grain(ctx, w, h, 0.18);
   });
 
 export const carromTexture = () =>

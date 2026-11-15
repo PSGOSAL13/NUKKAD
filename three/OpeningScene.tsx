@@ -8,6 +8,7 @@ import type { OwnerCharacter } from "@/content/schema";
 import { Owner } from "./character/OwnerCharacter";
 import { CameraRig, Choreography, type Stage } from "./Choreography";
 import { createDirector, DirectorContext, SHOTS } from "./director";
+import { Deferred } from "./Deferred";
 import { Interior } from "./interior/Interior";
 import { PALETTE as P } from "./palette";
 import { disposeMaterials, QualityContext, type Quality } from "./quality";
@@ -38,13 +39,15 @@ export type OpeningSceneProps = {
 export default function OpeningScene(props: OpeningSceneProps) {
   const { quality, active, onFail } = props;
   const [director] = useState(createDirector);
+  // Render only after every shader has been compiled in the background (see <Precompile>).
+  const [warm, setWarm] = useState(false);
   useEffect(() => () => disposeMaterials(), []);
 
   return (
     <Canvas
       dpr={quality === "high" ? [1, 1.75] : [1, 1.25]}
       shadows={quality === "high"}
-      frameloop={active ? "always" : "never"}
+      frameloop={active && warm ? "always" : "never"}
       camera={{ position: SHOTS.street.camera.toArray(), fov: SHOTS.street.fov, near: 0.05, far: 90 }}
       gl={{ antialias: quality === "high", powerPreference: "high-performance", alpha: false }}
       style={{ touchAction: "pan-y" }}
@@ -63,6 +66,7 @@ export default function OpeningScene(props: OpeningSceneProps) {
       <DirectorContext.Provider value={director}>
         <QualityContext.Provider value={quality}>
           <SceneContents {...props} />
+          <Precompile onDone={() => setWarm(true)} />
         </QualityContext.Provider>
       </DirectorContext.Provider>
     </Canvas>
@@ -87,7 +91,11 @@ function SceneContents({
       <Street />
       <StreetProps />
       <Owner config={owner} position={[-1.35, SIDEWALK_Y, FACADE_Z + 1.55]} rotation-y={0.28} scale={1.15} />
-      <Interior />
+      {/* The interior is behind the shutter: build it once the street is on screen. */}
+      <Deferred>
+        <Interior />
+        {quality === "high" && <ShadowSetup />}
+      </Deferred>
       <CameraRig />
       <Choreography
         stage={stage}
@@ -100,6 +108,34 @@ function SceneContents({
       <ReadySignal onReady={onReady} />
     </>
   );
+}
+
+/**
+ * Compiles every shader before the first frame — in the background where the
+ * browser supports parallel compilation (KHR_parallel_shader_compile) — so
+ * starting the 3D scene does not freeze the page on phones. The illustrated
+ * street stays on screen meanwhile. Stops waiting after 4 seconds.
+ */
+function Precompile({ onDone }: { onDone: () => void }) {
+  const gl = useThree((s) => s.gl);
+  const scene = useThree((s) => s.scene);
+  const camera = useThree((s) => s.camera);
+  const done = useRef(onDone);
+  useEffect(() => {
+    done.current = onDone;
+  }, [onDone]);
+  useEffect(() => {
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      done.current();
+    };
+    gl.compileAsync(scene, camera).then(finish, finish);
+    const timer = window.setTimeout(finish, 4000);
+    return () => window.clearTimeout(timer);
+  }, [gl, scene, camera]);
+  return null;
 }
 
 /** Warm evening: purple-blue sky fill, low orange sun, plus the practical lights in the props. */

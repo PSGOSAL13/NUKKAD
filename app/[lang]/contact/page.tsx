@@ -6,10 +6,15 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { site } from "@/lib/content";
 import { formatPhone, telHref } from "@/lib/format";
 import { resolveLocale } from "@/lib/locale-params";
+import { alternatesFor } from "@/lib/seo";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/contact">): Promise<Metadata> {
-  const { dict } = await resolveLocale(params);
-  return { title: dict.pages.contactTitle, description: dict.pages.contactIntro };
+  const { locale, dict } = await resolveLocale(params);
+  return {
+    title: dict.pages.contactTitle,
+    description: dict.pages.contactIntro,
+    alternates: alternatesFor(locale, "contact/"),
+  };
 }
 
 /** Phone, WhatsApp and email only — no forms, so nothing to spam and no data to store. */
@@ -42,7 +47,7 @@ export default async function ContactPage({ params }: PageProps<"/[lang]/contact
           <ContactActions dict={dict} size="lg" />
           <DeliveryLinks dict={dict} className="text-ink-muted" />
         </div>
-        <SeatingPolicy locale={locale} dict={dict} />
+        <SeatingPolicy locale={locale} dict={dict} headingLevel="h2" />
       </Container>
     </>
   );

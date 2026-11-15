@@ -15,6 +15,7 @@ import {
   useOpeningPrefs,
   useReducedMotion,
 } from "./hooks";
+import { BrewingLoader } from "./BrewingLoader";
 import { OpeningPoster } from "./OpeningPoster";
 
 // The 3D scene (three.js + R3F + GSAP) is a separate chunk, fetched only when used.
@@ -172,6 +173,15 @@ export function OpeningExperience(props: OpeningExperienceProps) {
               {title}
             </h1>
             {stage === "interior" && <p className="mt-3 max-w-md text-lg text-cream/90">{subtitle}</p>}
+            {use3D && !ready && (
+              <div className="mt-3 inline-flex">
+                <BrewingLoader
+                  label={labels.loading}
+                  skipLabel={labels.useSimpleView}
+                  onSkip={() => setTier("none")}
+                />
+              </div>
+            )}
           </div>
           <SoundButton on={soundOn} onToggle={() => setSoundOn(!soundOn)} labels={labels} />
         </div>

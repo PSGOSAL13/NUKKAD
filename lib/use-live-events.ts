@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { eventsFromCsv, type EventsData } from "./events-sheet";
+import type { EventsData } from "./events-sheet";
 import { nowInIndia } from "./events-shared";
 
 const SHEET_URL = process.env.NEXT_PUBLIC_EVENTS_SHEET_CSV_URL;
@@ -18,7 +18,9 @@ export function useLiveEvents(initial: EventsData): EventsData {
     const ctrl = new AbortController();
     fetch(SHEET_URL, { signal: ctrl.signal, cache: "no-store" })
       .then((r) => (r.ok ? r.text() : Promise.reject(new Error(`HTTP ${r.status}`))))
-      .then((csv) => {
+      // The sheet parser (and zod) is loaded only when a sheet is connected.
+      .then(async (csv) => {
+        const { eventsFromCsv } = await import("./events-sheet");
         const result = eventsFromCsv(csv);
         if (result.ok) setEvents(result.events);
         else console.warn("[NUKKAD] live events ignored — sheet has problems:", result.errors);

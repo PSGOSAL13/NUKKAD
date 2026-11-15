@@ -13,6 +13,7 @@ export const ml: Dictionary = {
   common: {
     language: "ഭാഷ",
     mainNavigation: "പ്രധാന നാവിഗേഷൻ",
+    footerNavigation: "ഫൂട്ടർ നാവിഗേഷൻ",
     openMenu: "മെനു തുറക്കുക",
     closeMenu: "മെനു അടയ്ക്കുക",
     skipToContent: "ഉള്ളടക്കത്തിലേക്ക് പോകുക",
@@ -21,6 +22,7 @@ export const ml: Dictionary = {
     address: "വിലാസം",
     callUs: "വിളിക്കൂ",
     whatsappUs: "വാട്ട്സ്ആപ്പ് ചെയ്യൂ",
+    whatsappMessage: "നമസ്കാരം നുക്കഡ്! എനിക്ക് ഒരു ചോദ്യമുണ്ട്:",
     directions: "വഴി കാണുക",
     viewFullMenu: "മുഴുവൻ മെനു കാണുക",
     readOurStory: "ഞങ്ങളുടെ കഥ വായിക്കുക",
@@ -97,6 +99,8 @@ export const ml: Dictionary = {
     seeAllEvents: "എല്ലാ ഇവന്റുകളും കാണുക",
   },
   opening: {
+    loading: "3D തെരുവ് തയ്യാറാകുന്നു…",
+    useSimpleView: "ലളിതമായ കാഴ്ച",
     comeSitStay: "വരൂ, ഇരിക്കൂ",
     skip: "ഒഴിവാക്കുക",
     continue: "തുടരുക",

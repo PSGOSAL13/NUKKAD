@@ -6,12 +6,14 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { t } from "@/i18n/config";
 import { home, site } from "@/lib/content";
 import { resolveLocale } from "@/lib/locale-params";
+import { alternatesFor } from "@/lib/seo";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/location">): Promise<Metadata> {
   const { locale, dict } = await resolveLocale(params);
   return {
     title: dict.pages.locationTitle,
     description: `${t(site.address.city, locale)}, ${t(site.address.state, locale)}`,
+    alternates: alternatesFor(locale, "location/"),
   };
 }
 

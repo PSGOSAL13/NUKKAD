@@ -21,9 +21,9 @@ import type { Locale } from "@/i18n/config";
  * fetched on demand via unicode-range when a page actually uses them.
  */
 const yatra = Yatra_One({ weight: "400", subsets: ["latin"], variable: "--font-yatra", display: "swap" });
-const baloo = Baloo_2({ subsets: ["latin"], variable: "--font-baloo", display: "swap" });
+const baloo = Baloo_2({ subsets: ["latin"], variable: "--font-baloo", display: "swap", preload: false });
 const mukta = Mukta({
-  weight: ["400", "500", "700"],
+  weight: ["400", "700"],
   subsets: ["latin"],
   variable: "--font-mukta",
   display: "swap",

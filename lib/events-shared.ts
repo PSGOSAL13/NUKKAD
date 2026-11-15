@@ -4,6 +4,7 @@
  */
 import type { CafeEvent } from "@/content/schema";
 import type { Locale } from "@/i18n/config";
+import { dateFormat } from "./intl";
 import type { Dictionary } from "@/i18n/dictionaries/en";
 
 export type { CafeEvent };
@@ -15,7 +16,7 @@ const intlLocale: Record<Locale, string> = { en: "en-IN", ml: "ml-IN" };
 /** Today's date and time in Trivandrum: { date: "2026-11-15", time: "14:05" }. */
 export function nowInIndia(at: Date = new Date()): { date: string; time: string } {
   const parts = Object.fromEntries(
-    new Intl.DateTimeFormat("en-GB", {
+    dateFormat("en-GB", {
       timeZone: TZ,
       year: "numeric",
       month: "2-digit",
@@ -42,7 +43,7 @@ export function upcomingEvents(events: CafeEvent[], now: { date: string; time: s
 const asDate = (iso: string) => new Date(`${iso}T12:00:00Z`);
 
 export function formatEventDate(iso: string, locale: Locale, style: "long" | "short" = "long"): string {
-  return new Intl.DateTimeFormat(intlLocale[locale], {
+  return dateFormat(intlLocale[locale], {
     weekday: style === "long" ? "long" : "short",
     day: "numeric",
     month: style === "long" ? "long" : "short",
@@ -51,7 +52,7 @@ export function formatEventDate(iso: string, locale: Locale, style: "long" | "sh
 }
 
 export function formatMonth(year: number, month: number, locale: Locale): string {
-  return new Intl.DateTimeFormat(intlLocale[locale], {
+  return dateFormat(intlLocale[locale], {
     month: "long",
     year: "numeric",
     timeZone: "UTC",
@@ -60,7 +61,7 @@ export function formatMonth(year: number, month: number, locale: Locale): string
 
 /** Short weekday names, Monday first. */
 export function weekdayNames(locale: Locale): string[] {
-  const f = new Intl.DateTimeFormat(intlLocale[locale], { weekday: "short", timeZone: "UTC" });
+  const f = dateFormat(intlLocale[locale], { weekday: "short", timeZone: "UTC" });
   return Array.from({ length: 7 }, (_, i) => f.format(new Date(Date.UTC(2024, 0, 1 + i, 12)))); // 1 Jan 2024 was a Monday
 }
 

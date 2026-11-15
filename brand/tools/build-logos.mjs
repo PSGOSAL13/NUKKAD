@@ -264,4 +264,29 @@ pngs.forEach((p, i) => {
 });
 write("app/favicon.ico", Buffer.concat([header, ...pngs]));
 
+// Social sharing image (WhatsApp, Facebook, X…): 1200×630, reverse logo + tagline on deep red.
+{
+  const logo = files["nukkad-primary-reverse.svg"];
+  const [, lw, lh] = logo.match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/).map(Number);
+  const k = 430 / lh;
+  const inner = logo
+    .replace(/^<svg[^>]*>/, "")
+    .replace(/<\/svg>\s*$/, "")
+    .replace(/<title>.*?<\/title>/, "");
+  const kT = 760 / (W.tagline.bbox[2] - W.tagline.bbox[0]);
+  const T = size(W.tagline, kT);
+  const stripes = Array.from(
+    { length: 30 },
+    (_, i) =>
+      `<rect x="${i * 40}" y="0" width="40" height="22" fill="${i % 2 ? C.cream : C.yellow}"/><circle cx="${i * 40 + 20}" cy="22" r="20" fill="${i % 2 ? C.cream : C.yellow}"/>`,
+  ).join("");
+  const og = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+<rect width="1200" height="630" fill="${C.red}"/>${stripes}
+<g transform="translate(${r(600 - (lw * k) / 2)} 60) scale(${r(k, 4)})">${inner}</g>
+${text(W.tagline, 600 - T.w / 2, 530, kT, C.yellow)}
+</svg>`;
+  write("brand/logo/png/nukkad-og-image.png", await sharp(Buffer.from(og)).png().toBuffer());
+  write("public/brand/og-image.png", await sharp(Buffer.from(og)).png({ compressionLevel: 9 }).toBuffer());
+}
+
 console.log(`Wrote ${written.length} files.`);

@@ -46,7 +46,7 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
               {dict.common.callUs} · {formatPhone(site.phone)}
             </a>
             <a
-              href={whatsappHref(site.whatsapp)}
+              href={whatsappHref(site.whatsapp, dict.common.whatsappMessage)}
               target="_blank"
               rel="noopener noreferrer"
               className={buttonClasses({ size: "sm" })}
@@ -80,7 +80,7 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           </div>
         </div>
 
-        <nav aria-label={dict.common.mainNavigation}>
+        <nav aria-label={dict.common.footerNavigation}>
           <ul className="space-y-2 font-heading font-semibold">
             {routes.map((r) => (
               <li key={r.key}>

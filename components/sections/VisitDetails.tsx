@@ -58,7 +58,7 @@ export function ContactActions({
         {dict.common.callUs}
         <span className="sr-only"> {formatPhone(site.phone)}</span>
       </Button>
-      <Button href={whatsappHref(site.whatsapp)} variant="primary" size={size}>
+      <Button href={whatsappHref(site.whatsapp, dict.common.whatsappMessage)} variant="primary" size={size}>
         <WhatsAppIcon />
         {dict.common.whatsappUs}
       </Button>
@@ -105,15 +105,25 @@ function PinIcon() {
 }
 
 /** Walk-in seating + group booking policy. */
-export function SeatingPolicy({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+export function SeatingPolicy({
+  locale,
+  dict,
+  headingLevel = "h3",
+}: {
+  locale: Locale;
+  dict: Dictionary;
+  /** Use "h2" where the policy sits directly under the page title. */
+  headingLevel?: "h2" | "h3";
+}) {
+  const H = headingLevel;
   return (
     <div className="grid gap-4 sm:grid-cols-2">
       <div className="rounded-lg border border-cream-dark bg-paper p-5">
-        <h3 className="text-lg font-bold">{dict.common.walkInTitle}</h3>
+        <H className="text-lg font-bold">{dict.common.walkInTitle}</H>
         <p className="mt-1">{t(site.seating, locale)}</p>
       </div>
       <div className="rounded-lg border border-cream-dark bg-yellow-soft p-5">
-        <h3 className="text-lg font-bold">{dict.common.groupBookingTitle}</h3>
+        <H className="text-lg font-bold">{dict.common.groupBookingTitle}</H>
         <p className="mt-1">{t(site.groupBooking.note, locale)}</p>
         <a
           href={telHref(site.phone)}

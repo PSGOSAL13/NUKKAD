@@ -6,10 +6,15 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { menu } from "@/lib/content";
 import { menuLabels } from "@/lib/menu-shared";
 import { resolveLocale } from "@/lib/locale-params";
+import { alternatesFor } from "@/lib/seo";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/menu">): Promise<Metadata> {
-  const { dict } = await resolveLocale(params);
-  return { title: dict.pages.menuTitle, description: dict.pages.menuIntro };
+  const { locale, dict } = await resolveLocale(params);
+  return {
+    title: dict.pages.menuTitle,
+    description: dict.pages.menuIntro,
+    alternates: alternatesFor(locale, "menu/"),
+  };
 }
 
 /** The full menu: a street-stall board with interactive categories and item details. */

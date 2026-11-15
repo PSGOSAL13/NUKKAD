@@ -36,6 +36,10 @@ const nextConfig = (phase: string): NextConfig => {
       baatein: baateinData,
       gallery: galleryData,
       opening: openingData,
+      "environment (hosting settings)": {
+        NEXT_PUBLIC_SITE_URL:
+          process.env.NEXT_PUBLIC_SITE_URL ?? "PLACEHOLDER — the site's domain is not set",
+      },
     });
   }
   return config;

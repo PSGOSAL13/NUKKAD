@@ -16,6 +16,7 @@ export const en = {
   common: {
     language: "Language",
     mainNavigation: "Main navigation",
+    footerNavigation: "Footer navigation",
     openMenu: "Open menu",
     closeMenu: "Close menu",
     skipToContent: "Skip to content",
@@ -24,6 +25,7 @@ export const en = {
     address: "Address",
     callUs: "Call us",
     whatsappUs: "WhatsApp us",
+    whatsappMessage: "Namaste NUKKAD! I have a question:",
     directions: "Get directions",
     viewFullMenu: "See the full menu",
     readOurStory: "Read our story",
@@ -101,6 +103,8 @@ export const en = {
     seeAllEvents: "See all events",
   },
   opening: {
+    loading: "Brewing the 3D street…",
+    useSimpleView: "Use simple view",
     comeSitStay: "Come, Sit & Stay",
     skip: "Skip",
     continue: "Continue",

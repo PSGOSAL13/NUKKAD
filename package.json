@@ -16,7 +16,9 @@
     "predev": "npm run content:prepare",
     "prebuild": "npm run content:prepare",
     "content:prepare": "node scripts/build-photos.mjs && node scripts/sync-sheets.ts",
-    "sheets:template": "node scripts/sync-sheets.ts --template"
+    "sheets:template": "node scripts/sync-sheets.ts --template",
+    "preview": "node scripts/serve-out.mjs",
+    "test:e2e": "node tests/e2e.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
@@ -35,10 +37,12 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/three": "^0.187.0",
+    "axe-core": "^4.14.0",
     "eslint": "^9",
     "eslint-config-next": "16.4.6",
     "prettier": "^3.10.1",
     "prettier-plugin-tailwindcss": "^0.8.1",
+    "puppeteer-core": "^24.43.1",
     "sharp": "^0.35.5",
     "tailwindcss": "4.3.3",
     "typescript": "^5"

@@ -85,7 +85,13 @@ const colours = [
     role: "Secondary text (5.7:1 on cream).",
     cls: "bg-ink-muted text-cream",
   },
-  { name: "Clay", token: "clay", hex: "#B5653A", role: "Illustration only.", cls: "bg-clay text-ink" },
+  {
+    name: "Clay",
+    token: "clay",
+    hex: "#B5653A",
+    role: "Illustration only.",
+    cls: "bg-clay text-ink text-xl",
+  },
   {
     name: "Veg / Non-veg",
     token: "veg · nonveg",

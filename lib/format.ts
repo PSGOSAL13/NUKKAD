@@ -1,4 +1,5 @@
 import type { Locale } from "@/i18n/config";
+import { dateFormat, numberFormat } from "./intl";
 import type { Day } from "@/content/schema";
 
 const intlLocale: Record<Locale, string> = { en: "en-IN", ml: "ml-IN" };
@@ -6,7 +7,7 @@ const intlLocale: Record<Locale, string> = { en: "en-IN", ml: "ml-IN" };
 /** "07:30" → "7:30 am" (or the Malayalam equivalent). */
 export function formatTime(hhmm: string, locale: Locale): string {
   const [h, m] = hhmm.split(":").map(Number);
-  return new Intl.DateTimeFormat(intlLocale[locale], {
+  return dateFormat(intlLocale[locale], {
     hour: "numeric",
     minute: "2-digit",
     timeZone: "UTC",
@@ -15,7 +16,7 @@ export function formatTime(hhmm: string, locale: Locale): string {
 
 /** ₹ with Indian digit grouping. */
 export function formatPrice(rupees: number, locale: Locale): string {
-  return new Intl.NumberFormat(intlLocale[locale], {
+  return numberFormat(intlLocale[locale], {
     style: "currency",
     currency: "INR",
     maximumFractionDigits: 0,
@@ -48,7 +49,9 @@ export function directionsHref(s: {
 }
 
 export const telHref = (e164: string) => `tel:${e164}`;
-export const whatsappHref = (e164: string) => `https://wa.me/${e164.replace(/^\+/, "")}`;
+/** WhatsApp click-to-chat link, optionally with a pre-filled message. */
+export const whatsappHref = (e164: string, message?: string) =>
+  `https://wa.me/${e164.replace(/^\+/, "")}${message ? `?text=${encodeURIComponent(message)}` : ""}`;
 
 export const dayOrder: Day[] = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
 

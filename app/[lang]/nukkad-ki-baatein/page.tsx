@@ -11,6 +11,7 @@ import { t } from "@/i18n/config";
 import { baatein, buildNow, publicEvents, site } from "@/lib/content";
 import { telHref } from "@/lib/format";
 import { resolveLocale } from "@/lib/locale-params";
+import { alternatesFor } from "@/lib/seo";
 
 export async function generateMetadata({
   params,
@@ -19,6 +20,7 @@ export async function generateMetadata({
   return {
     title: `${dict.nav.baatein} — ${t(baatein.intro.title, locale)}`,
     description: t(baatein.intro.body[0], locale),
+    alternates: alternatesFor(locale, "nukkad-ki-baatein/"),
   };
 }
 

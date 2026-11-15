@@ -7,10 +7,15 @@ import { Paragraphs } from "@/components/ui/Paragraphs";
 import { t } from "@/i18n/config";
 import { ownerCharacter, story } from "@/lib/content";
 import { resolveLocale } from "@/lib/locale-params";
+import { alternatesFor } from "@/lib/seo";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/our-story">): Promise<Metadata> {
   const { locale, dict } = await resolveLocale(params);
-  return { title: dict.nav.story, description: t(story.intro.body[0], locale) };
+  return {
+    title: dict.nav.story,
+    description: t(story.intro.body[0], locale),
+    alternates: alternatesFor(locale, "our-story/"),
+  };
 }
 
 /** Our Story: the founder's story as a full conversation over chai. */

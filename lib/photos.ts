@@ -21,7 +21,7 @@ export function photoSourceFor(collection: PhotoCollection, photo: string | unde
   const base = `/images/${collection}/${photo}`;
   return {
     src: `${base}-960.webp`,
-    srcSet: `${base}-480.webp 480w, ${base}-960.webp 960w`,
+    srcSet: `${base}-240.webp 240w, ${base}-480.webp 480w, ${base}-960.webp 960w`,
     width: p.width,
     height: p.height,
     sample: p.sample,

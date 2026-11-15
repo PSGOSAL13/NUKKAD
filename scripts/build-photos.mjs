@@ -21,7 +21,7 @@ import sharp from "sharp";
 
 const root = path.resolve(import.meta.dirname, "..");
 const COLLECTIONS = ["menu", "events"];
-const SIZES = [480, 960];
+const SIZES = [240, 480, 960];
 const EXT = /\.(jpe?g|png|webp|avif)$/i;
 const NAME = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -68,13 +68,13 @@ for (const collection of COLLECTIONS) {
       }
       built++;
     }
-    const meta = await sharp(outs[1]).metadata();
+    const meta = await sharp(outs[SIZES.indexOf(960)]).metadata();
     manifest[name] = { width: meta.width, height: meta.height, sample };
   }
 
   // Remove outputs whose source photo was deleted.
   for (const f of fs.readdirSync(outDir)) {
-    const name = f.replace(/-(480|960)\.webp$/, "");
+    const name = f.replace(new RegExp(`-(${SIZES.join("|")})\\.webp$`), "");
     if (!sources.has(name)) fs.rmSync(path.join(outDir, f));
   }
 

@@ -6,6 +6,7 @@ import { locales, t } from "@/i18n/config";
 import { buildNow, site } from "@/lib/content";
 import { fontVariables } from "@/lib/fonts";
 import { resolveLocale } from "@/lib/locale-params";
+import { alternatesFor, SITE_URL } from "@/lib/seo";
 import "@/styles/globals.css";
 
 // Only /en and /ml exist; anything else is a 404.
@@ -19,9 +20,25 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
   const { locale } = await resolveLocale(params);
   const name = `${t(site.name, locale)} | ${site.nameDevanagari}`;
   return {
+    metadataBase: new URL(SITE_URL),
     title: { default: `${name} — ${t(site.tagline, locale)}`, template: `%s · ${name}` },
     description: t(site.description, locale),
-    alternates: { languages: Object.fromEntries(locales.map((l) => [l, `/${l}/`])) },
+    // Home page alternates; inner pages set their own.
+    alternates: alternatesFor(locale, ""),
+    openGraph: {
+      type: "website",
+      siteName: name,
+      locale: locale === "ml" ? "ml_IN" : "en_IN",
+      images: [
+        {
+          url: "/brand/og-image.png",
+          width: 1200,
+          height: 630,
+          alt: "NUKKAD | नुक्कड — Apna Nukkad. Apne Log.",
+        },
+      ],
+    },
+    twitter: { card: "summary_large_image" },
   };
 }
 

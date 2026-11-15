@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { menuFromCsv, type MenuData } from "./menu-sheet";
+import type { MenuData } from "./menu-sheet";
 
 const SHEET_URL = process.env.NEXT_PUBLIC_MENU_SHEET_CSV_URL;
 
@@ -17,7 +17,9 @@ export function useLiveMenu(initial: MenuData): MenuData {
     const ctrl = new AbortController();
     fetch(SHEET_URL, { signal: ctrl.signal, cache: "no-store" })
       .then((r) => (r.ok ? r.text() : Promise.reject(new Error(`HTTP ${r.status}`))))
-      .then((csv) => {
+      // The sheet parser (and zod) is loaded only when a sheet is connected.
+      .then(async (csv) => {
+        const { menuFromCsv } = await import("./menu-sheet");
         const result = menuFromCsv(csv);
         if (result.ok) setMenu(result.menu);
         else console.warn("[NUKKAD] live menu ignored — sheet has problems:", result.errors);

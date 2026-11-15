@@ -27,7 +27,7 @@ export function LocationMap({ locale, dict }: { locale: Locale; dict: Dictionary
         )}
         {landmarks.length > 0 && (
           <>
-            <h3 className="text-sm font-semibold text-ink-muted">{dict.common.nearbyLandmarks}</h3>
+            <p className="text-sm font-semibold text-ink-muted">{dict.common.nearbyLandmarks}</p>
             <ul className="mt-1 flex flex-wrap gap-x-4 gap-y-1">
               {landmarks.map((l) => (
                 <li key={l.id}>
