@@ -5,7 +5,7 @@
  * Keep this file free of Next.js / "@/" imports so plain Node can run it.
  *
  * Sheet layout: one row per product. Category columns only need filling on
- * the first row of each category. See OWNER-GUIDE.md for the owner's guide.
+ * the first row of each category. See ADMIN_GUIDE.md for the owner's guide.
  */
 import { z } from "zod";
 import { menuSchema } from "../content/schema.ts";

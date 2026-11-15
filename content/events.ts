@@ -3,7 +3,7 @@ import type { eventsSchema } from "./schema";
 
 /**
  * BUILT-IN EVENTS — used when no Google Sheet "Events" tab is connected
- * (see OWNER-GUIDE.md), and as the safety fallback if it can't be read.
+ * (see ADMIN_GUIDE.md), and as the safety fallback if it can't be read.
  *
  * ⚠️ SAMPLE EVENTS (`sample: true`) — replace with real ones.
  *

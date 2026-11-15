@@ -1,7 +1,17 @@
-# Running the NUKKAD website — owner's guide
+# NUKKAD — Admin guide (for the owner)
 
-You can manage the **menu** and **events** without touching any code. Both
-live in one Google Sheet (two tabs); the website reads it.
+There is no login or dashboard (by decision — see DEPLOYMENT.md). Everyday
+changes are made in two places:
+
+| What                                                                               | Where                                                       | Code?         | Live in…                     |
+| ---------------------------------------------------------------------------------- | ----------------------------------------------------------- | ------------- | ---------------------------- |
+| Menu: products, prices, Sold Out, hide, photos                                     | Google Sheet → **Menu** tab                                 | No            | ~5 min (photos: next deploy) |
+| Events: create, edit, delete, dates, publish, photos                               | Google Sheet → **Events** tab                               | No            | ~5 min (photos: next deploy) |
+| Address, Maps link, hours, phone, WhatsApp, Instagram, Swiggy/Zomato, announcement | `content/site.ts` (§7)                                      | Edit one file | next deploy (~2 min)         |
+| Landmarks on the map                                                               | `content/location.ts` (§7)                                  | Edit one file | next deploy                  |
+| Founder story, café story, page text                                               | `content/story.ts`, `content/home.ts`, `content/baatein.ts` | Edit one file | next deploy                  |
+
+The menu and events live in one Google Sheet (two tabs); the website reads it.
 
 > Until the sheet is connected, the site shows the built-in **sample** menu
 > (`content/menu.ts`) and **sample** events (`content/events.ts`). Every
@@ -172,3 +182,58 @@ kept and the build lists problems by row number, e.g.
 Group bookings (10 or more people) and customised menus are handled by
 phone only — the website shows a **Call for group booking** button. Nothing
 to manage here; just keep the phone number in `content/site.ts` current.
+
+---
+
+## 7. Café details, contact numbers, announcements (content files)
+
+These live in small, clearly commented files in the `content/` folder. You
+can edit them **in the browser** on GitHub — no tools needed:
+
+1. Open the project on github.com → `content/` → the file (e.g. `site.ts`).
+2. Click the ✏️ pencil (Edit), change the text between the quotes, keep the
+   commas and brackets as they are.
+3. Click **Commit changes**. The host rebuilds the site automatically
+   (about 2 minutes). If you made a mistake, the build stops, the live site
+   stays as it was, and the error says exactly which line to fix.
+
+### `content/site.ts`
+
+| To change          | Edit                                 | Example                                                                  |
+| ------------------ | ------------------------------------ | ------------------------------------------------------------------------ |
+| Address            | `address.line1`, `postalCode`        | `line1: { en: "TC 12/345, MG Road" }`                                    |
+| Google Maps link   | `mapsUrl` (remove the `//` in front) | `mapsUrl: "https://maps.app.goo.gl/…"`                                   |
+| Exact map pin      | `geo`                                | `geo: { lat: 8.5241, lng: 76.9366 }`                                     |
+| Opening hours      | `hours`                              | `{ days: ["mon","tue"], open: "08:00", close: "20:00" }` (24-hour)       |
+| Phone / WhatsApp   | `phone`, `whatsapp`                  | `"+919876543210"` (no spaces)                                            |
+| Instagram          | `social`                             | `{ platform: "instagram", url: "https://www.instagram.com/yourpage" }`   |
+| Swiggy / Zomato    | `delivery`                           | `delivery: { swiggy: "https://…", zomato: "https://…" }`                 |
+| Announcement strip | `announcement`                       | text, optional link, optional `until: "2027-01-26"` (hides itself after) |
+| Group booking text | `groupBooking.note`                  |                                                                          |
+
+Malayalam: add `ml: "…"` next to `en: "…"` (`{ en: "Kerala", ml: "കേരളം" }`).
+Without it, the English text is shown on the Malayalam pages.
+
+### `content/location.ts` — the illustrated map
+
+Set `confirmed: true` once the premises are final, replace the landmark
+labels, and move pins with `x` / `y` (0–100, left→right, top→bottom).
+
+### Story and page text
+
+`content/story.ts` (founder story — a conversation over chai),
+`content/home.ts` (home page), `content/baatein.ts` (Nukkad Ki Baatein page).
+Lines containing **PLACEHOLDER** are waiting for your words.
+
+## 8. Voice recordings for the welcome
+
+Record the two greeting lines (see `content/opening.ts` for the exact
+words and the recording spec), save them as
+`public/audio/welcome-hi.mp3` and `public/audio/welcome-ml.mp3`, and
+uncomment the two `voice:` lines in `content/opening.ts`.
+
+## 9. Before launch — the placeholder list
+
+Every build prints a list headed **"placeholder value(s) still in
+content/"**. Launch when that list is empty (or only contains things you've
+decided to keep).

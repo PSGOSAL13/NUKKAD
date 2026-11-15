@@ -3,7 +3,7 @@ import type { baateinSchema } from "./schema";
 
 /**
  * ✏️  EDIT ME — the "Nukkad Ki Baatein — Stories Beyond Chai" page.
- * Events themselves live in the Google Sheet (or content/events.ts) — see OWNER-GUIDE.md.
+ * Events themselves live in the Google Sheet (or content/events.ts) — see ADMIN_GUIDE.md.
  * ⚠️ DRAFT COPY — rewrite in your own voice. Theme descriptions only restate the
  *    brief; personal details are for the owner to add.
  */

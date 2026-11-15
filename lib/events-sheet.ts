@@ -1,7 +1,7 @@
 /**
  * Google Sheet "Events" tab ⇄ events. Used at build time (Node) and for the
  * live refresh in the browser. No Next.js / "@/" imports, so plain Node can run it.
- * One row per event; delete a row to delete the event. See OWNER-GUIDE.md.
+ * One row per event; delete a row to delete the event. See ADMIN_GUIDE.md.
  */
 import { z } from "zod";
 import { eventsSchema } from "../content/schema.ts";

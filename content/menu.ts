@@ -2,7 +2,7 @@ import type { z } from "zod";
 import type { menuSchema } from "./schema";
 
 /**
- * BUILT-IN MENU — used when no Google Sheet is connected (see OWNER-GUIDE.md),
+ * BUILT-IN MENU — used when no Google Sheet is connected (see ADMIN_GUIDE.md),
  * and as the safety fallback if the sheet can't be read.
  *
  * ⚠️ SAMPLE CONTENT: every product, description and price below is a
